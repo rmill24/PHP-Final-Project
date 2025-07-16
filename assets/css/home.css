@@ -41,7 +41,7 @@ body {
 .carousel-caption {
     background-color: rgba(222, 218, 207, 0.8);
     border: 3px solid var(--primary-offwhite);
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     bottom: 20%;
     padding-bottom: 35px;
@@ -72,7 +72,7 @@ body {
 .carousel-caption .btn {
     background: var(--accent);
     font-family: var(--font-header);
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 10px 30px;
     font-weight: bold;
     text-transform: uppercase;
@@ -93,7 +93,6 @@ body {
 /* Carousel Inner Container */
 .carousel-inner {
     overflow: hidden;
-    border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 

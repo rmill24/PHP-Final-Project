@@ -11,7 +11,7 @@
         </div>
 
         <!-- Carousel Content -->
-        <div class="carousel-inner rounded shadow">
+        <div class="carousel-inner shadow">
             <!-- Slide 1 -->
             <div class="carousel-item active">
                 <img src="https://i.pinimg.com/736x/84/68/cd/8468cdd48ba8b0e90e12051bb2a97891.jpg" class="d-block w-100" alt="New Collection">

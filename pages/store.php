@@ -1,3 +1,25 @@
+<?php
+require_once 'includes/db.php';
+
+$category = $_GET['category'] ?? null;
+$params = [];
+
+$sql = "SELECT p.*, c.name AS category_name FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id";
+
+if ($category) {
+    $sql .= " WHERE c.name = ?";
+    $params[] = $category;
+}
+
+$sql .= " ORDER BY p.name";
+
+$stmt = $db->prepare($sql);
+$stmt->execute($params);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+
 <div class="container">
 
     <div class="store-nav">
@@ -13,49 +35,21 @@
 
     <div class="product-grid">
 
-        <div class="product-card">
-            <img src="https://plus.unsplash.com/premium_photo-1675107359683-6d9b90aa593b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-            <div class="product-info">
-                <h3>Silky white blouse</h3>
-                <div class="price-info">
-                    <p>P350</p>
-                    <button>Add to Cart</button>
+        <?php foreach ($products as $product): ?>
+            <div class="product-card">
+                <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                <div class="product-info">
+                    <h3><?= htmlspecialchars($product['name']) ?></h3>
+                    <div class="price-info">
+                        <p>P<?= number_format($product['price'], 2) ?></p>
+                        <form method="POST" action="actions/add_to_cart.php">
+                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1635073243626-36ee25e0f77e?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-            <div class="product-info">
-                <h3>Silky white blouse</h3>
-                <div class="price-info">
-                    <p>P350</p>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1635073243626-36ee25e0f77e?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-            <div class="product-info">
-                <h3>Silky white blouse</h3>
-                <div class="price-info">
-                    <p>P350</p>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1635073243626-36ee25e0f77e?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-            <div class="product-info">
-                <h3>Silky white blouse</h3>
-                <div class="price-info">
-                    <p>P350</p>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
-        </div>
+        <?php endforeach; ?>
 
     </div>
 

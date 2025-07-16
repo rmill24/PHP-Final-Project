@@ -8,6 +8,9 @@
   --secondary-dark: #262626;
   --accent: #4d403a;
   --accent-light: #e8c8b8;
+  --font-header: 'Raleway', sans-serif;
+  --font-sub: 'Montserrat', sans-serif;
+  --font-body: 'Cormorant Garamond', serif;
   --transition: all 0.3s ease;
 }
 

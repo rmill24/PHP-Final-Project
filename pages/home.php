@@ -10,7 +10,6 @@
             <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="4" aria-label="Slide 5"></button>
         </div>
 
-
         <!-- Carousel Content -->
         <div class="carousel-inner rounded shadow">
             <!-- Slide 1 -->
@@ -23,24 +22,20 @@
                 </div>
             </div>
 
-
             <!-- Slide 2 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/53/29/63/53296318765b637b8ccd9b50082a4b07.jpg" class="d-block w-100" alt="Limited Edition Items">
             </div>
-
 
             <!-- Slide 3 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/dd/35/45/dd354522de7b5d53ab1e006ee8dfd7ef.jpg" class="d-block w-100" alt="Special Discounts">
             </div>
 
-
             <!-- Slide 4 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/da/4a/c3/da4ac365fcfd75f768d0fd14e50f0878.jpg" class="d-block w-100" alt="Summer Collection">
             </div>
-
 
             <!-- Slide 5 -->
             <div class="carousel-item">
@@ -50,44 +45,30 @@
     </div>
 </div>
 
-
 <div class="category-layout">
     <!-- Left Large Card: Casual Dress -->
     <div class="category-large">
-        <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Casual Dress">
-        <div class="category-text">
-            <h3>CASUAL DRESS</h3>
-            <p>"Casual Never Looked This Good"</p>
-            <a href="#" class="btn">SHOP NOW</a>
-        </div>
+        <img src="assets/img/casual-dress.png" alt="Casual Dress">
     </div>
+
 
     <!-- Right Side Small Cards -->
     <div class="category-side">
         <div class="category-small">
-            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Casual Tops">
-            <div class="category-text">
-                <h4>CASUAL TOPS</h4>
-                <p>"Own the Look. Own the Day."</p>
-            </div>
+            <img src="assets/img/women-tops.png" alt="Casual Tops">
         </div>
         <div class="category-small">
-            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Casual Bottoms">
-            <div class="category-text">
-                <h4>CASUAL BOTTOMS</h4>
-                <p>"Easy Looks from the Waist Down"</p>
-            </div>
+            <img src="assets/img/women-bottoms.png" alt="Casual Bottoms">
         </div>
+
 
         <!-- Outerwear Banner -->
         <div class="category-banner">
-            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Outerwear">
-            <div class="category-text">
-                <h3>OUTERWEAR</h3>
-            </div>
+            <img src="assets/img/outerwear.png" alt="Outerwear">
         </div>
     </div>
 </div>
+
 
 <!-- Featured Collection -->
 <section class="featured">
@@ -112,7 +93,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-            
+           
             <!-- Product 2 -->
             <div class="product-card">
                 <div class="product-image">
@@ -125,7 +106,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-            
+           
             <!-- Product 3 -->
             <div class="product-card">
                 <div class="product-image">
@@ -138,7 +119,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-            
+           
             <!-- Product 4 -->
             <div class="product-card">
                 <div class="product-image">

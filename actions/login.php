@@ -20,8 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="modal">
         <button class="close-btn" onclick="closeModal()">&times;</button>
         <div class="modal-header">
-            <h2 class="modal-title">Welcome back</h2>
-            <p class="modal-subtitle">Sign in to your account</p>
+            <div class="modal-title-container">
+                <h2 class="modal-title">Welcome back</h2>
+                <p class="modal-subtitle">Sign in to your account</p>
+            </div>
         </div>
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
@@ -32,5 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
             <button type="submit" class="sign-in-btn">Sign In</button>
         </form>
+        <p class="sign-up-text">
+            Don't have an account yet?
+            <a href="#" class="sign-up-link" onclick="handleSignUp()">Sign up here</a>
+        </p>
     </div>
 </div>

@@ -1,7 +1,5 @@
 <?php
 // payment.php - Complete Payment Method Page for Women's Clothing Website
-// Start session to access cart data
-session_start();
 
 // Sample cart data (in a real application, this would come from the session/database)
 $cartItems = [

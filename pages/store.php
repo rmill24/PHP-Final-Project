@@ -3,11 +3,11 @@
     <div class="store-nav">
         <h1>Venusia Collection</h1>
         <nav>
-            <a href="#">All Items</a>
-            <a href="#">Tops</a>
-            <a href="#">Bottoms</a>
-            <a href="#">Dresses</a>
-            <a href="#">Outerwear</a>
+            <a href="?page=store">All Items</a>
+            <a href="?page=store&category=Tops">Tops</a>
+            <a href="?page=store&category=Bottoms">Bottoms</a>
+            <a href="?page=store&category=Dresses">Dresses</a>
+            <a href="?page=store&category=Outerwear">Outerwear</a>
         </nav>
     </div>
 

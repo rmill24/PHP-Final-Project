@@ -35,7 +35,7 @@ h1 {
 .product-grid {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 4rem;
   flex-wrap: wrap;
   font-family: "Montserrat", sans-serif;
   padding: 1rem;
@@ -74,12 +74,17 @@ h1 {
 }
 
 @media (max-width: 576px){
+
+    .product-grid {
+      gap: 2.5rem;
+    }
+
     .product-card{
-        width: 175px;
+        width: 200px;
     }
 
     .product-card img {
-        height: 150px;
+        height: 200px;
     }
 
     .price-info {

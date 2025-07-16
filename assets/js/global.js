@@ -36,3 +36,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function openModal() {
+        document.querySelector('.modal-overlay').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.querySelector('.modal-overlay').style.display = 'none';
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+
+        // Collect the login data
+        const email = document.querySelector('.form-input[type="email"]').value;
+        const password = document.querySelector('.form-input[type="password"]').value;
+
+        // Send login data to login.php via AJAX (no refresh)
+        fetch('login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        })
+        .then(response => response.text())
+        .then(result => {
+            if (result === 'success') {
+                // Login successful
+                closeModal();
+                location.reload(); // or redirect if needed
+            } else {
+                alert("Login failed. Please try again.");
+            }
+        });
+    }

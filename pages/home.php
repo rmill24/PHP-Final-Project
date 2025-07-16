@@ -1,40 +1,55 @@
-<!-- Hero Carousel -->
-<section class="hero">
-    <div class="carousel">
-        <div class="carousel-inner">
+<div class="carousel-container">
+    <!-- Bootstrap Carousel -->
+    <div id="carouselVenusia" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="4" aria-label="Slide 5"></button>
+        </div>
+
+
+        <!-- Carousel Content -->
+        <div class="carousel-inner rounded shadow">
             <!-- Slide 1 -->
             <div class="carousel-item active">
-                <div class="hero-content">
-                    <h1>Casual Never Looked This Good</h1>
-                    <a href="#" class="btn">SHOP NOW</a>
+                <img src="https://i.pinimg.com/736x/84/68/cd/8468cdd48ba8b0e90e12051bb2a97891.jpg" class="d-block w-100" alt="New Collection">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Discover Timeless Style</h2>
+                    <p>"Redefine simplicity and sophistication with curated looks that speak grace and confidence"</p>
+                    <a class="btn btn-light text-light" href="#quickShop">Sign Up & Slay</a>
                 </div>
             </div>
-            
+
+
             <!-- Slide 2 -->
             <div class="carousel-item">
-                <div class="hero-content">
-                    <h1>New Spring Collection</h1>
-                    <a href="#" class="btn">SHOP NOW</a>
-                </div>
+                <img src="https://i.pinimg.com/1200x/53/29/63/53296318765b637b8ccd9b50082a4b07.jpg" class="d-block w-100" alt="Limited Edition Items">
             </div>
-            
+
+
             <!-- Slide 3 -->
             <div class="carousel-item">
-                <div class="hero-content">
-                    <h1>Effortless Everyday Style</h1>
-                    <a href="#" class="btn">SHOP NOW</a>
-                </div>
+                <img src="https://i.pinimg.com/1200x/dd/35/45/dd354522de7b5d53ab1e006ee8dfd7ef.jpg" class="d-block w-100" alt="Special Discounts">
+            </div>
+
+
+            <!-- Slide 4 -->
+            <div class="carousel-item">
+                <img src="https://i.pinimg.com/1200x/da/4a/c3/da4ac365fcfd75f768d0fd14e50f0878.jpg" class="d-block w-100" alt="Summer Collection">
+            </div>
+
+
+            <!-- Slide 5 -->
+            <div class="carousel-item">
+                <img src="https://i.pinimg.com/1200x/d3/9c/d6/d39cd6ed7f4c27737736d47f4a35404f.jpg" class="d-block w-100" alt="Premium Selection">
             </div>
         </div>
-        
-        <!-- Carousel Indicators -->
-        <div class="carousel-controls">
-            <div class="carousel-indicator active" data-slide="0"></div>
-            <div class="carousel-indicator" data-slide="1"></div>
-            <div class="carousel-indicator" data-slide="2"></div>
-        </div>
     </div>
-</section>
+</div>
+
 
 <div class="category-layout">
     <!-- Left Large Card: Casual Dress -->

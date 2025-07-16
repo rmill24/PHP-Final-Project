@@ -40,13 +40,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
                 <div class="product-info">
                     <h3><?= htmlspecialchars($product['name']) ?></h3>
-                    <div class="price-info">
-                        <p>P<?= number_format($product['price'], 2) ?></p>
-                        <form method="POST" action="actions/add_to_cart.php">
-                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                            <button type="submit">Add to Cart</button>
-                        </form>
-                    </div>
+                    <p>P<?= number_format($product['price'], 2) ?></p>
+                    <form method="POST" action="actions/add_to_cart.php">
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <button type="submit">Add to Cart</button>
+                    </form>
                 </div>
             </div>
         <?php endforeach; ?>

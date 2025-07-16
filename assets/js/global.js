@@ -38,22 +38,27 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function openModal() {
-    document.body.style.overflow = 'hidden';
-    document.getElementById('loginModal').classList.add('active');
-    document.querySelector('.modal').classList.add('active');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const modal = modalOverlay.querySelector('.modal');
+   
+    modalOverlay.classList.add('active');
+    modal.classList.add('active');
 }
+ 
 function closeModal() {
-    document.body.style.overflow = 'auto';
-    document.getElementById('loginModal').classList.remove('active');
-    document.querySelector('.modal').classList.remove('active');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const modal = modalOverlay.querySelector('.modal');
+ 
+    modal.classList.remove('active');
+    modalOverlay.classList.remove('active');
 }
-
+ 
 function handleLogin(event) {
     event.preventDefault();
-
+ 
     const email = document.querySelector('.form-input[type="email"]').value;
     const password = document.querySelector('.form-input[type="password"]').value;
-
+ 
     fetch('login.php', {
         method: 'POST',
         headers: {

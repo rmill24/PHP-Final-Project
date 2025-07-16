@@ -33,7 +33,7 @@
         <div class="right-section">
             <div class="nav-icons">
                 <a href="#"><i class="far fa-user"></i></a>
-                <a href="#"><i class="fas fa-shopping-bag"></i></a>
+                <a href="index.php?page=cart" class="<?= $current_page === 'cart' ? 'active' : '' ?>"><i class="fas fa-shopping-bag"></i></a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>

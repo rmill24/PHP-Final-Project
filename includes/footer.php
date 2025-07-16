@@ -27,7 +27,7 @@
         <div class="footer-links">
         <h3>Information</h3>
         <ul>
-            <li><a href="about.php">About Us</a></li>
+            <li><a href="index.php?page=about">About Us</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms & Conditions</a></li>
         </ul>

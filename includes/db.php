@@ -1,13 +1,23 @@
 <?php
 $config = require __DIR__ . '/../localconfig.php';
 
-$mysqli = new mysqli(
-    $config['host'],
-    $config['username'],
-    $config['password'],
-    $config['dbname']
-);
-
-if ($mysqli->connect_error) {
-    die('Database connection failed: ' . $mysqli->connect_error);
+try {
+    $db = new PDO(
+        "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4",
+        $config['username'],
+        $config['password']
+    );
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("DB error: " . $e->getMessage());
 }
+
+// debugging
+// try {
+//     $pdo = new PDO("mysql:host=localhost;dbname=venusia_db", "root", "");
+//     echo "Connected!";
+// } catch (PDOException $e) {
+//     echo "Error: " . $e->getMessage();
+// }
+
+?>

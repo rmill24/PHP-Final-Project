@@ -9,6 +9,7 @@
     </div>
   </section>
 
+
   <main class="container">
     <!-- Our Story -->
     <section id="our-story">
@@ -19,9 +20,10 @@
         </p>
       </div>
 
+
       <div class="story-highlight">
         <div class="story-highlight-img">
-          <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venusia Atelier" />
+          <img src="https://i.pinimg.com/736x/4a/ed/93/4aed93e9e963b60532832701c85a1b82.jpg" alt="Venusia Atelier" />
         </div>
         <div class="story-highlight-content">
           <h3>The Beginning</h3>
@@ -31,9 +33,10 @@
         </div>
       </div>
 
+
       <div class="story-highlight reverse">
         <div class="story-highlight-img">
-          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venusia Showroom" />
+          <img src="assets/img/group-pic.jpg" alt="Venusia Group Picture" />
         </div>
         <div class="story-highlight-content">
           <h3>Today & Beyond</h3>
@@ -43,6 +46,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- Mission & Vision -->
     <section id="mission-vision">
@@ -70,6 +74,7 @@
       </div>
     </section>
 
+
     <!-- Values -->
     <section id="values">
       <div class="values-container">
@@ -94,6 +99,7 @@
       </div>
     </section>
 
+
     <!-- Team -->
     <section id="team">
       <h1 class="section-title">Meet the Team</h1>
@@ -101,7 +107,7 @@
       <div class="team">
         <div class="member">
           <div class="member-img">
-            <img src="assets/img/venusia_icon.png" alt="Kim Shin E. Del Amen" />
+            <img src="assets/img/kimshin-pic.jpeg" alt="Kim Shin E. Del Amen" />
           </div>
           <h4>Kim Shin E. Del Amen</h4>
           <span>Researcher & Frontend Developer</span>
@@ -115,9 +121,10 @@
           </div>
         </div>
 
+
         <div class="member">
           <div class="member-img">
-            <img src="assets/img/venusia_icon.png" alt="Tara Victoria E. Gerones" />
+            <img src="assets/img/tara-pic.jpg" alt="Tara Victoria E. Gerones" />
           </div>
           <h4>Tara Victoria E. Gerones</h4>
           <span>Researcher & Frontend Developer</span>
@@ -131,9 +138,10 @@
           </div>
         </div>
 
+
         <div class="member">
           <div class="member-img">
-            <img src="assets/img/venusia_icon.png" alt="Racelle H. Millagracia" />
+            <img src="assets/img/racelle-pic.jpg" alt="Racelle H. Millagracia" />
           </div>
           <h4>Racelle H. Millagracia</h4>
           <span>Backend Developer</span>
@@ -146,6 +154,7 @@
             <a href="#"><i class="far fa-envelope" aria-label="Email Contact"></i></a>
           </div>
         </div>
+
 
         <div class="member">
           <div class="member-img">
@@ -165,12 +174,14 @@
       </div>
     </section>
 
+
     <!-- Call to Action -->
     <section class="cta-section">
       <h2>Ready to Experience Venusia?</h2>
       <p>Discover our latest collection and find pieces that speak to your unique style and personality.</p>
       <a href="#collection" class="cta-button">Explore Our Collection</a>
     </section>
+
 
     <!-- Statistics -->
     <section class="stats-section">
@@ -195,3 +206,4 @@
     </section>
   </main>
 </div>
+

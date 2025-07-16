@@ -1,9 +1,9 @@
 
     <div class="container">
-        <header class="cart-header">
+        <div class="cart-header">
             <h1 class="cart-title">Your Venusia Cart</h1>
             <p class="cart-subtitle">Select items to proceed to checkout</p>
-        </header>
+        </div>
 
         <main class="cart-content">
             <!-- Cart with items -->

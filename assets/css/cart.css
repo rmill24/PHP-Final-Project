@@ -123,6 +123,7 @@
 
         .customize-option {
             color: var(--accent);
+            font-family: var(--font-sub);
             cursor: pointer;
             text-decoration: underline;
             font-size: 0.9rem;

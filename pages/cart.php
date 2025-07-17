@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 
     if ($cartId) {
         $stmt = $db->prepare("
-            SELECT ci.id, ci.quantity, p.name, p.price, p.image_url, s.label AS size
+            SELECT ci.id AS cart_item_id, ci.quantity, p.name, p.price, p.image_url, s.label AS size
             FROM cart_item ci
             JOIN products p ON ci.product_id = p.id
             JOIN sizes s ON ci.size_id = s.id
@@ -34,37 +34,72 @@ if (isset($_SESSION['user_id'])) {
         <p class="cart-subtitle">Select items to proceed to checkout</p>
     </div>
 
-    <main class="cart-content">
+    <div class="cart-content">
         <!-- Cart with items -->
-        <section class="cart-items" style="<?= empty($cartItems) ? 'display:none;' : '' ?>">
-            <?php foreach ($cartItems as $item): ?>
-                <article class="cart-item">
-                    <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
-                    <div class="item-details">
-                        <h3><?= htmlspecialchars($item['name']) ?></h3>
-                        <p>Size: <?= htmlspecialchars($item['size']) ?></p>
-                        <p>Quantity: <?= $item['quantity'] ?></p>
-                    </div>
-                    <div class="item-price">
-                        P<?= number_format($item['price'], 2) ?>
-                    </div>
-                </article>
-            <?php endforeach; ?>
+        <section class="cart-items">
+            <?php if (empty($cartItems)): ?>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".cart-items").style.display = "none";
+                        document.querySelector(".order-summary").style.display = "none";
+                        document.querySelector(".empty-cart").style.display = "block";
+                    });
+                </script>
+            <?php else: ?>
+                <?php foreach ($cartItems as $item): ?>
+                    <article class="cart-item" data-cart-item-id="<?= $item['cart_item_id'] ?>">
+                        <div class="item-selector">
+                            <input type="checkbox" class="item-checkbox" checked>
+                        </div>
+                        <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
+                        <div class="item-details">
+                            <div class="item-header">
+                                <h3><?= htmlspecialchars($item['name']) ?></h3>
+                                <div class="item-meta">
+                                    <span>Size: <span class="current-size"><?= htmlspecialchars($item['size']) ?></span></span>
+                                    <!-- Optional static color placeholder -->
+                                    <span>Color: <span class="current-color">Default</span></span>
+                                </div>
+                                <div>
+                                    <span class="customize-option change-size">Change Size</span>
+                                    <span class="customize-option change-color">Change Color</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn minus">-</button>
+                                    <input type="number" value="<?= $item['quantity'] ?>" class="quantity-input" min="1">
+                                    <button class="quantity-btn plus">+</button>
+                                </div>
+                                <button class="remove-item">
+                                    <i class="far fa-trash-alt"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-price">
+                            ₱<?= number_format($item['price'], 2) ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
         </section>
 
         <!-- Empty cart state (hidden by default) -->
-        <section class="empty-cart" style="<?= empty($cartItems) ? '' : 'display:none;' ?>">
-            <div class="empty-cart-icon"><i class="fas fa-shopping-bag"></i></div>
+        <section class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
             <h2 class="empty-cart-title">Your Venusia Cart is Empty</h2>
-            <p class="empty-cart-text">Discover our new collection of timeless pieces crafted with care.</p>
+            <p class="empty-cart-text">Discover our new collection of timeless pieces crafted with care and designed for comfort and elegance.</p>
             <a href="index.php?page=store" class="shop-btn">Start Shopping</a>
         </section>
 
-        <aside class="order-summary" style="<?= empty($cartItems) ? 'display:none;' : '' ?>>
+        <aside class="order-summary">
             <h2 class="summary-title">Order Summary</h2>
             <div class="summary-row">
                 <span>Selected Items (<span id="selected-count">2</span>)</span>
-                <span>$<span id="subtotal">434.00</span></span>
+                <span>₱<span id="subtotal">434.00</span></span>
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
@@ -72,18 +107,18 @@ if (isset($_SESSION['user_id'])) {
             </div>
             <div class="summary-row">
                 <span>Tax</span>
-                <span>$<span id="tax">47.36</span></span>
+                <span>₱<span id="tax">47.36</span></span>
             </div>
 
             <!-- Promo code discount row (hidden by default) -->
             <div class="summary-row promo-discount" style="display: none;">
                 <span>Discount <span class="promo-code-name"></span> <span class="promo-discount-remove">(Remove)</span></span>
-                <span class="discount-amount">-$0.00</span>
+                <span class="discount-amount">-₱0.00</span>
             </div>
 
             <div class="summary-row summary-total">
                 <span>Total</span>
-                <span>$<span id="total">481.36</span></span>
+                <span>₱<span id="total">481.36</span></span>
             </div>
 
             <!-- Promo Code Section -->
@@ -96,12 +131,12 @@ if (isset($_SESSION['user_id'])) {
                 <div class="promo-message" id="promoMessage"></div>
             </div>
 
-            <button class="checkout-btn" onclick="window.location.href='index.php?page=payment'">Proceed to Checkout</button>
-            <a href="index.php?page=store" class="continue-shopping">
+            <button class="checkout-btn" onclick="window.location.href='payment.php'">Proceed to Checkout</button>
+            <a href="#" class="continue-shopping">
                 <i class="fas fa-arrow-left"></i> Continue Shopping
             </a>
         </aside>
-    </main>
+    </div>
 </div>
 
 <!-- Customization Modal -->

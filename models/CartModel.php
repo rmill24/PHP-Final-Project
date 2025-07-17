@@ -43,6 +43,23 @@ class CartModel {
         return $stmt->execute([$cartId, $productId, $sizeId, $quantity]);
     }
 
+    public function updateItemQuantity($cartItemId, $quantity) {
+        $stmt = $this->db->prepare("
+            UPDATE cart_item
+            SET quantity = ?
+            WHERE id = ? AND cart_id IN (SELECT id FROM cart WHERE user_id = ?)
+        ");
+        return $stmt->execute([$quantity, $cartItemId, $this->userId]);
+    }
+
+    public function removeItem($cartItemId) {
+        $stmt = $this->db->prepare("
+            DELETE FROM cart_item
+            WHERE id = ? AND cart_id IN (SELECT id FROM cart WHERE user_id = ?)
+        ");
+        return $stmt->execute([$cartItemId, $this->userId]);
+    }
+
     private function getOrCreateCartId() {
         $stmt = $this->db->prepare("SELECT id FROM cart WHERE user_id = ?");
         $stmt->execute([$this->userId]);
@@ -54,4 +71,3 @@ class CartModel {
         return $this->db->lastInsertId();
     }
 }
-

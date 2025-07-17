@@ -105,7 +105,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-           
+
             <!-- Product 2 -->
             <div class="product-card">
                 <div class="product-image">
@@ -118,7 +118,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-           
+
             <!-- Product 3 -->
             <div class="product-card">
                 <div class="product-image">
@@ -131,7 +131,7 @@
                     <button class="add-to-cart">Add to Cart</button>
                 </div>
             </div>
-           
+
             <!-- Product 4 -->
             <div class="product-card">
                 <div class="product-image">
@@ -151,5 +151,56 @@
         <div class="promo-banner">
             <img src="assets/img/casual-store.png" alt="Summer Sale - 30% Off Everything">
         </div>
+    </div>
+</section>
+
+<!-- Registration Section -->
+<section class="registration-section">
+    <div class="registration-container">
+        <div class="registration-content">
+            <h2>Sign Up Now</h2>
+            <p class="subtitle">A touch of elegance, just for you.</p>
+            <p>Join our list and enjoy early access to new drops, exclusive styles, and timeless pieces you'll keep reaching for.</p>
+        </div>
+
+        <form class="registration-form" action="register.php" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+        </form>
     </div>
 </section>

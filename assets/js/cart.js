@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cartItem.remove();
             updateCartTotals();
             checkEmptyCart();
+            updateCartCountBadge();
           } else {
             alert("❌ Failed to remove item.");
           }

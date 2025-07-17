@@ -18,11 +18,12 @@ if (!$product) {
 
 // Get sizes
 $stmt = $db->prepare("
-    SELECT ps.id AS product_size_id, s.label
+    SELECT s.id AS size_id, s.label
     FROM product_sizes ps
     JOIN sizes s ON ps.size_id = s.id
     WHERE ps.product_id = ?
 ");
+
 
 $stmt->execute([$productId]);
 $sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +50,7 @@ $sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p><strong>Available Size</strong></p>
                     <div class="size-grid">
                         <?php foreach ($sizes as $size): ?>
-                            <button type="button" class="size-option" data-size-id="<?= $size['product_size_id'] ?>">
+                            <button type="button" class="size-option" data-size-id="<?= $size['size_id'] ?>">
                                 <?= htmlspecialchars($size['label']) ?>
                             </button>
                         <?php endforeach; ?>
@@ -60,11 +61,17 @@ $sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="action-grid">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                     <button type="submit" id="addToCartBtn">Add to Cart</button>
-                    <button type="button">Buy Now</button> <!-- Optional: connect this later -->
+                    <button type="button">Buy Now</button> <!-- Optional -->
                 </div>
 
                 <!-- Message container -->
                 <div id="cartMessage" style="margin-top: 10px; font-weight: bold;"></div>
+            </form>
+
+
+
+            <!-- Message container -->
+            <div id="cartMessage" style="margin-top: 10px; font-weight: bold;"></div>
             </form>
 
         </div>

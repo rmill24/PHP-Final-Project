@@ -138,8 +138,8 @@ if (isset($_SESSION['user_id'])) {
                 <div class="promo-message" id="promoMessage"></div>
             </div>
 
-            <button class="checkout-btn" onclick="window.location.href='payment.php'">Proceed to Checkout</button>
-            <a href="#" class="continue-shopping">
+            <button class="checkout-btn" onclick="window.location.href='index.php?page=payment'">Proceed to Checkout</button>
+            <a href="index.php?page=store" class="continue-shopping">
                 <i class="fas fa-arrow-left"></i> Continue Shopping
             </a>
         </aside>

@@ -1,49 +1,110 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // ========== MOBILE MENU ==========
   const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
   const closeMenuBtn = document.querySelector(".close-menu-btn");
   const mobileMenuOverlay = document.querySelector(".mobile-menu-overlay");
-  const mobileMenuContainer = document.querySelector(".mobile-menu-container");
 
-  // Toggle mobile menu
-  mobileMenuToggle.addEventListener("click", function () {
-    mobileMenuOverlay.classList.add("active");
-    document.body.style.overflow = "hidden"; // Prevent scrolling
-  });
-
-  // Close menu when clicking close button or overlay
   function closeMenu() {
     mobileMenuOverlay.classList.remove("active");
-    document.body.style.overflow = ""; // Re-enable scrolling
+    document.body.style.overflow = "";
   }
 
-  closeMenuBtn.addEventListener("click", closeMenu);
-  mobileMenuOverlay.addEventListener("click", function (e) {
-    if (e.target === mobileMenuOverlay) {
-      closeMenu();
-    }
+  mobileMenuToggle?.addEventListener("click", () => {
+    mobileMenuOverlay.classList.add("active");
+    document.body.style.overflow = "hidden";
   });
 
-  // Close menu when clicking on a link
-  const mobileNavLinks = document.querySelectorAll(".mobile-nav-links a");
-  mobileNavLinks.forEach((link) => {
+  closeMenuBtn?.addEventListener("click", closeMenu);
+
+  mobileMenuOverlay?.addEventListener("click", (e) => {
+    if (e.target === mobileMenuOverlay) closeMenu();
+  });
+
+  document.querySelectorAll(".mobile-nav-links a").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
 
-  // Close menu when pressing Escape key
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && mobileMenuOverlay.classList.contains("active")) {
       closeMenu();
     }
   });
+
+  // ========== LOGIN MODAL ==========
+  const profileLink = document.getElementById("profileLink");
+  profileLink?.addEventListener("click", function (e) {
+    e.preventDefault();
+    fetch("actions/check_login.php")
+      .then((res) => res.text())
+      .then((status) => {
+        if (status === "logged_in") {
+          window.location.href = "index.php?page=user";
+        } else {
+          openModal();
+        }
+      })
+      .catch(() => openModal());
+  });
+
+  // ========== ADD TO CART FORMS ==========
+  document.querySelectorAll(".add-to-cart-form").forEach((form) => {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const productId = form.getAttribute("data-product-id");
+      const sizeId = form.getAttribute("data-size-id");
+      const quantity = 1;
+
+      fetch("actions/add_to_cart.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `product_id=${encodeURIComponent(
+          productId
+        )}&size_id=${encodeURIComponent(sizeId)}&quantity=${quantity}`,
+      })
+        .then((res) => res.text())
+        .then((response) => {
+          if (response === "added") {
+            updateCartCountBadge();
+          } else if (response === "unauthorized") {
+            alert("⚠️ Please log in to add items to your cart.");
+          } else {
+            alert("❌ Something went wrong.");
+          }
+        })
+        .catch((err) => {
+          console.error("Error adding to cart:", err);
+          alert("❌ Server error.");
+        });
+    });
+  });
+
+  // ========== INITIALIZE CART COUNT BADGE ==========
+  updateCartCountBadge();
 });
 
+// ========== CART COUNT BADGE ==========
+function updateCartCountBadge() {
+  fetch("actions/get_cart_count.php")
+    .then((res) => res.json())
+    .then((data) => {
+      const cartCount = document.getElementById("cartCount");
+      if (cartCount) {
+        cartCount.textContent = data.count;
+        cartCount.style.display = data.count > 0 ? "inline-block" : "none";
+      }
+    })
+    .catch((err) => {
+      console.error("❌ Failed to fetch cart count", err);
+    });
+}
+
+// ========== MODAL OPEN/CLOSE ==========
 function openModal() {
   const modalOverlay = document.querySelector(".modal-overlay");
   const modal = modalOverlay.querySelector(".modal");
   const errorDiv = document.getElementById("loginError");
-
-  if (errorDiv) errorDiv.textContent = ""; // Clear old errors
-
+  if (errorDiv) errorDiv.textContent = "";
   modalOverlay.classList.add("active");
   modal.classList.add("active");
 }
@@ -51,32 +112,27 @@ function openModal() {
 function closeModal() {
   const modalOverlay = document.querySelector(".modal-overlay");
   const modal = modalOverlay.querySelector(".modal");
-
   modal.classList.remove("active");
   modalOverlay.classList.remove("active");
 }
 
 function handleLogin(e) {
   e.preventDefault();
-
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
 
-  fetch("/PHP-Final-Project/actions/login.php", {
+  fetch("actions/login.php", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(
+      password
+    )}`,
   })
-    .then((response) => response.text())
+    .then((res) => res.text())
     .then((result) => {
-      console.log("Server response:", result);
-
       const errorDiv = document.getElementById("loginError");
-
       if (result === "redirect:profile") {
-        window.location.href = "/PHP-Final-Project/index.php?page=user";
+        window.location.href = "index.php?page=user";
       } else if (result === "unverified") {
         errorDiv.textContent = "⚠️ Please verify your email before logging in.";
       } else {
@@ -88,64 +144,3 @@ function handleLogin(e) {
       alert("❌ An error occurred. Try again.");
     });
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const profileLink = document.getElementById("profileLink");
-
-  if (profileLink) {
-    profileLink.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      fetch("/PHP-Final-Project/actions/check_login.php")
-        .then((res) => res.text())
-        .then((status) => {
-          if (status === "logged_in") {
-            window.location.href = "/PHP-Final-Project/index.php?page=user";
-          } else {
-            openModal(); // login modal
-          }
-        })
-        .catch((err) => {
-          console.error("Error checking login status:", err);
-          openModal(); // fallback to modal
-        });
-    });
-  }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.add-to-cart-form').forEach(form => {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const productId = form.getAttribute('data-product-id');
-      const sizeId = form.getAttribute('data-size-id'); // update this later to get from a dropdown
-      const quantity = 1;
-
-      fetch('actions/add_to_cart.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `product_id=${encodeURIComponent(productId)}&size_id=${encodeURIComponent(sizeId)}&quantity=${quantity}`
-      })
-      .then(res => res.text())
-      .then(response => {
-        if (response === 'added') {
-          alert('✅ Item added to cart!');
-        } else if (response === 'unauthorized') {
-          alert('⚠️ Please log in to add items to your cart.');
-        } else {
-          alert('❌ Something went wrong.');
-        }
-      })
-      .catch(error => {
-        console.error('Error adding to cart:', error);
-        alert('❌ Server error.');
-      });
-    });
-  });
-});
-
-
-

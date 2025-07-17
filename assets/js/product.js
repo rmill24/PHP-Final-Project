@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("addToCartForm");
   const sizeButtons = document.querySelectorAll(".size-option");
   const sizeInput = document.getElementById("selectedSizeInput");
-  const messageDiv = document.getElementById("cartMessage"); // optional: for inline message
+  const messageDiv = document.getElementById("cartMessage");
 
   // Highlight selected size and set hidden input
   sizeButtons.forEach((button) => {
@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
 
     if (!sizeInput.value) {
-      alert("⚠️ Please select a size before adding to cart.");
+      messageDiv.textContent = "⚠️ Please select a size before adding to cart.";
+      messageDiv.style.color = "darkorange";
       return;
     }
 
@@ -26,21 +27,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetch("actions/add_to_cart.php", {
       method: "POST",
-      body: formData
+      body: formData,
     })
-      .then(res => res.text())
-      .then(response => {
+      .then((res) => res.text())
+      .then((response) => {
         if (response === "added") {
-          alert("✅ Item added to cart!");
-        } else if (response.toLowerCase().includes("unauthorized") || response.includes("You must be logged in")) {
-          alert("⚠️ You must be logged in to add items to cart.");
+          showCartMessage("✅ Item added to cart!", "green");
+
+          // Reset selection
+          sizeButtons.forEach((btn) => btn.classList.remove("selected"));
+          sizeInput.value = "";
+
+          updateCartCountBadge();
+        } else if (
+          response.toLowerCase().includes("unauthorized") ||
+          response.includes("You must be logged in")
+        ) {
+          showCartMessage(
+            "⚠️ You must be logged in to add items to cart.",
+            "darkorange"
+          );
         } else {
-          alert("❌ Something went wrong: " + response);
+          showCartMessage("❌ Something went wrong: " + response, "red");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error adding to cart:", err);
-        alert("❌ Failed to add to cart. Try again.");
+        messageDiv.textContent = "❌ Failed to add to cart. Try again.";
+        messageDiv.style.color = "red";
       });
   });
 });
+
+function showCartMessage(text, color = "black", duration = 3000) {
+  const messageDiv = document.getElementById("cartMessage");
+  if (!messageDiv) return;
+
+  messageDiv.textContent = text;
+  messageDiv.style.color = color;
+  messageDiv.style.display = "block";
+
+  // Clear message after `duration` ms
+  setTimeout(() => {
+    messageDiv.textContent = "";
+    messageDiv.style.display = "none";
+  }, duration);
+}

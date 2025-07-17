@@ -21,6 +21,13 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: var(--font-body);
+  color: var(--secondary-dark);
+  background-color: var(--primary-offwhite);
+  line-height: 1.6;
+}
+
 /* Header Styles */
 .main-header {
   padding: 1rem 1rem 0;

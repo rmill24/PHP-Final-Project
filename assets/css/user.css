@@ -1,14 +1,6 @@
 :root {
     --success: #4a8a5e;
     --error: #c23b3b;
-    --transition: all 0.3s ease;
-    --font-header: 'Raleway', sans-serif;
-    --font-sub: 'Montserrat', sans-serif;
-    --font-body: 'Cormorant Garamond', serif;
-}
-
-body {
-    background-color: var(--primary-offwhite);
 }
 /* User Profile Styles */
 .user-profile {

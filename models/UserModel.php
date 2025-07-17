@@ -77,4 +77,80 @@ class UserModel
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getOrdersWithItems($userId)
+    {
+        // Fetch orders for user
+        $stmt = $this->db->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt->execute([$userId]);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$orders) {
+            return [];
+        }
+
+        // For each order, fetch order items joined with product info
+        foreach ($orders as &$order) {
+            $stmt = $this->db->prepare("
+                SELECT oi.*, p.name AS product_name, p.image_url AS product_image, s.label AS size_label
+                FROM order_items oi
+                JOIN products p ON oi.product_id = p.id
+                JOIN sizes s ON oi.size_id = s.id
+                WHERE oi.order_id = ?
+        ");
+            $stmt->execute([$order['id']]);
+            $order['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $orders;
+    }
+
+    public function getRecentOrdersWithItems($userId, $limit = 5)
+    {
+        // Cast $limit to int to avoid injection risk
+        $limit = (int)$limit;
+
+        $stmt = $this->db->prepare("
+        SELECT * FROM orders
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT $limit
+    ");
+        $stmt->execute([$userId]);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($orders as &$order) {
+            $stmtItems = $this->db->prepare("
+            SELECT oi.*, p.name AS product_name, p.image_url AS product_image, s.label AS size_label
+            FROM order_items oi
+            JOIN products p ON oi.product_id = p.id
+            JOIN sizes s ON oi.size_id = s.id
+            WHERE oi.order_id = ?
+        ");
+            $stmtItems->execute([$order['id']]);
+            $order['items'] = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $orders;
+    }
+
+    public function getOrderByIdAndUser($orderId, $userId)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getOrderItems($orderId)
+    {
+        $stmt = $this->db->prepare("
+        SELECT oi.*, p.name AS product_name, p.image_url AS product_image, s.label AS size_label
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.id
+        JOIN sizes s ON oi.size_id = s.id
+        WHERE oi.order_id = ?
+    ");
+        $stmt->execute([$orderId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

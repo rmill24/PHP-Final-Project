@@ -15,6 +15,9 @@ if (!isset($_SESSION['user_id'])) {
 $userModel = new UserModel($db);
 $user = $userModel->getById($_SESSION['user_id']);
 
+// After $user is fetched, get orders
+$orders = $userModel->getRecentOrdersWithItems($_SESSION['user_id']);
+
 if (!$user) {
     echo "User not found.";
     exit;
@@ -82,29 +85,37 @@ if (!$user) {
 
                 <div class="content-section">
                     <h3>Recent Orders</h3>
-                    <div class="order-card">
-                        <div class="order-header">
-                            <span class="order-number">#ORD-78945</span>
-                            <span class="order-date">June 12, 2025</span>
-                            <span class="order-status delivered">Delivered</span>
-                            <span class="order-total">$189.99</span>
-                        </div>
-                        <div class="order-products">
-                            <div class="product-preview">
-                                <img src="https://amourlinen.com/cdn/shop/files/DSC_5973_6e0d2ea1-8f0e-4804-90a6-8d186eb6e980.jpg?v=1749550330" alt="Product">
-                                <span>Linen Wrap Dress</span>
+
+                    <?php if (empty($orders)) : ?>
+                        <p>No orders found.</p>
+                    <?php else: ?>
+                        <?php foreach ($orders as $order): ?>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <span class="order-number">#ORD-<?= htmlspecialchars($order['id']) ?></span>
+                                    <span class="order-date"><?= date('F j, Y', strtotime($order['created_at'])) ?></span>
+                                    <!-- Assuming you have a status column, else remove or hardcode -->
+                                    <span class="order-status delivered">Delivered</span>
+                                    <span class="order-total">₱<?= number_format($order['total'], 2) ?></span>
+                                </div>
+                                <div class="order-products">
+                                    <?php foreach ($order['items'] as $item): ?>
+                                        <div class="product-preview">
+                                            <img src="<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                            <span><?= htmlspecialchars($item['product_name']) ?> (Size: <?= htmlspecialchars($item['size_label']) ?>)</span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="order-actions">
+                                    <a href="index.php?page=order_detail&order_id=<?= urlencode($order['id']) ?>" class="btn-outline">View All</a>
+                                    <a href="index.php?page=store" class="btn-outline">Buy Again</a>
+                                </div>
+
                             </div>
-                            <div class="product-preview">
-                                <img src="https://image.uniqlo.com/UQ/ST3/ph/imagesgoods/460311/item/phgoods_31_460311_3x4.jpg?width=423" alt="Product">
-                                <span>Wide Leg Pants</span>
-                            </div>
-                        </div>
-                        <div class="order-actions">
-                            <a href="#" class="btn-outline">View All</a>
-                            <a href="index.php?page=store" class="btn-outline">Buy Again</a>
-                        </div>
-                    </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
+
             </div>
         </div>
     </div>

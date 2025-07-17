@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Fetch user data from the database
-$stmt = $db->prepare("SELECT first_name, last_name, email, phone_number FROM users WHERE id = ?");
+$stmt = $db->prepare("SELECT first_name, last_name, email, phone_number, address FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -76,7 +76,10 @@ if (!$user) {
                             <label>Phone</label>
                             <p><?= htmlspecialchars($user['phone_number']) ?></p>
                         </div>
-
+                        <div class="detail-item">
+                            <label>Address</label>
+                            <p><?= htmlspecialchars($user['address']) ?></p>
+                        </div>
                     </div>
                 </div>
 

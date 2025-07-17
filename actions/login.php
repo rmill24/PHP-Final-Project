@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
         <p class="sign-up-text">
             Don't have an account yet?
-            <a href="#" class="sign-up-link" onclick="handleSignUp()">Sign up here</a>
+            <a href="#register" class="sign-up-link" onclick="closeModal()">Sign up here</a>
         </p>
     </div>
 </div>

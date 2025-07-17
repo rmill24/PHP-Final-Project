@@ -60,47 +60,56 @@ document.addEventListener("DOMContentLoaded", function () {
     if (alert) alert.style.display = "none";
   }, 10000);
 
-  document.querySelector(".registration-form").addEventListener("submit", function (e) {
-    const errors = [];
+  document
+    .querySelector(".registration-form")
+    .addEventListener("submit", function (e) {
+      const errors = [];
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const address = document.getElementById("address").value.trim();
 
-    const nameRegex = /^[A-Za-z\s'-]+$/;
-    const phoneRegex = /^\d{11}$/;
-    const emailRegex = /^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+      const nameRegex = /^[A-Za-z\s'-]+$/;
+      const phoneRegex = /^\d{11}$/;
+      const emailRegex = /^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
 
-    if (!nameRegex.test(firstName)) {
+      if (!nameRegex.test(firstName)) {
         errors.push("First name should only contain letters and spaces.");
-    }
+      }
 
-    if (!nameRegex.test(lastName)) {
+      if (!nameRegex.test(lastName)) {
         errors.push("Last name should only contain letters and spaces.");
-    }
+      }
 
-    if (!phoneRegex.test(phone)) {
+      if (!phoneRegex.test(phone)) {
         errors.push("Phone number must be exactly 11 digits.");
-    }
+      }
 
-    if (!emailRegex.test(email)) {
+      if (!emailRegex.test(email)) {
         errors.push("Email format is invalid.");
-    }
+      }
 
-    if (password.length < 6) {
+      if (password.length < 6) {
         errors.push("Password must be at least 6 characters.");
-    }
+      }
 
-    if (password !== confirmPassword) {
+      if (password !== confirmPassword) {
         errors.push("Passwords do not match.");
-    }
+      }
 
-    if (errors.length > 0) {
+      if (address.length < 8) {
+        errors.push("Address must be at least 8 characters long.");
+      }
+
+      if (errors.length > 0) {
         e.preventDefault(); // Stop form from submitting
-        document.getElementById("formErrors").innerHTML = errors.map(err => `<p>• ${err}</p>`).join("");
-    }
-});
+        document.getElementById("formErrors").innerHTML = errors
+          .map((err) => `<p>• ${err}</p>`)
+          .join("");
+      }
+    });
 });

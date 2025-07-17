@@ -31,7 +31,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="carousel-caption d-none d-md-block">
                     <h2>Discover Timeless Style</h2>
                     <p>"Redefine simplicity and sophistication with curated looks that speak grace and confidence"</p>
-                    <a class="btn btn-light text-light" href="#quickShop">Sign Up & Slay</a>
+                    <a class="btn btn-light text-light" href="#register">Sign Up & Slay</a>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </section>
 
 <!-- Registration Section -->
-<section class="registration-section">
+<section class="registration-section" id="register">
     <div class="registration-container">
         <div class="registration-content">
             <h2>Sign Up Now</h2>
@@ -149,6 +149,13 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="form-group full-width">
                     <label for="phone">Phone</label>
                     <input type="tel" id="phone" name="phone" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
                 </div>
             </div>
 

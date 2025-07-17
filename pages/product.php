@@ -44,10 +44,7 @@ if (!$product) {
                 </div>
             </div>
             <div class="action-grid">
-                <form method="POST" action="actions/add_to_cart.php">
-                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <button type="submit">Add to Cart</button>
-                </form>
+                <button>Add to Cart</button>
                 <button>Buy Now</button>
             </div>
         </div>

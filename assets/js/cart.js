@@ -195,4 +195,122 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial totals
   updateCartTotals();
+
+  // Customization modal functionality
+  const modal = document.getElementById("customizationModal");
+  const customizeButtons = document.querySelectorAll(
+    ".change-size, .change-color"
+  );
+  const closeModal = document.querySelector(".close-cart-modal");
+  const cancelBtn = document.querySelector(".cart-cancel-btn");
+  let currentItem = null;
+  let currentOption = null;
+  let currentItemIndex = null;
+
+  customizeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      currentItem = this.closest(".cart-item");
+      currentOption = this.classList.contains("change-size") ? "size" : "color";
+      currentItemIndex = Array.from(
+        document.querySelectorAll(".cart-item")
+      ).indexOf(currentItem);
+
+      // Set current selections in modal
+      const currentValue = currentItem.querySelector(
+        `.current-${currentOption}`
+      ).textContent;
+      const optionValues = document.querySelectorAll(
+        `#${currentOption}Options .option-value`
+      );
+
+      optionValues.forEach((option) => {
+        option.classList.remove("selected");
+        if (option.dataset.value === currentValue) {
+          option.classList.add("selected");
+        }
+      });
+
+      // Update modal title
+      document.querySelector(".cart-modal-title").textContent = `Change ${
+        currentOption.charAt(0).toUpperCase() + currentOption.slice(1)
+      }`;
+
+      // Show modal
+      modal.style.display = "flex";
+    });
+  });
+
+  // Option selection in modal
+  document.querySelectorAll(".option-value").forEach((option) => {
+    option.addEventListener("click", function () {
+      this.parentElement.querySelectorAll(".option-value").forEach((opt) => {
+        opt.classList.remove("selected");
+      });
+      this.classList.add("selected");
+    });
+  });
+
+  // Close modal
+  function closeModalFunc() {
+    modal.style.display = "none";
+  }
+
+  closeModal.addEventListener("click", closeModalFunc);
+  cancelBtn.addEventListener("click", closeModalFunc);
+
+  // Save changes
+  document
+    .querySelector(".cart-save-btn")
+    .addEventListener("click", function () {
+      if (
+        currentItem &&
+        currentOption === "size" &&
+        currentItemIndex !== null
+      ) {
+        const selectedOption = document.querySelector(
+          "#sizeOptions .option-value.selected"
+        );
+
+        if (selectedOption) {
+          const newSizeLabel = selectedOption.dataset.value;
+          const newSizeId = selectedOption.dataset.id;
+          const cartItemId = currentItem.dataset.cartItemId;
+
+          console.log("Saving size change...");
+          console.log("Cart Item ID:", cartItemId);
+          console.log("New Size ID:", newSizeId);
+          console.log("New Size Label:", newSizeLabel);
+
+          fetch("actions/update_cart_size.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `cart_item_id=${cartItemId}&size_id=${newSizeId}`,
+          })
+            .then((res) => res.text())
+            .then((response) => {
+
+              console.log("Server response:", response);
+
+              if (response === "updated") {
+                currentItem.querySelector(".current-size").textContent =
+                  newSizeLabel;
+                currentItem.querySelector(".current-size").dataset.sizeId =
+                  newSizeId;
+                closeModalFunc();
+              } else {
+                alert("❌ Failed to update size.");
+              }
+            });
+        }
+      } else {
+        closeModalFunc(); // If not "size", fallback
+      }
+    });
+
+  // Close modal when clicking outside
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModalFunc();
+    }
+  });
 });

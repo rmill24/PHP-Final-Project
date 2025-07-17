@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 
     if ($cartId) {
         $stmt = $db->prepare("
-            SELECT ci.id AS cart_item_id, ci.quantity, p.name, p.price, p.image_url, s.label AS size
+            SELECT ci.id AS cart_item_id, ci.product_id, ci.size_id, ci.quantity, p.name, p.price, p.image_url, s.label AS size
             FROM cart_item ci
             JOIN products p ON ci.product_id = p.id
             JOIN sizes s ON ci.size_id = s.id
@@ -54,15 +54,22 @@ if (isset($_SESSION['user_id'])) {
                         <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
                         <div class="item-details">
                             <div class="item-header">
-                                <h3><?= htmlspecialchars($item['name']) ?></h3>
+                                <h3>
+                                    <a href="index.php?page=product&product_id=<?= $item['product_id'] ?>">
+                                        <?= htmlspecialchars($item['name']) ?>
+                                    </a>
+                                </h3>
                                 <div class="item-meta">
-                                    <span>Size: <span class="current-size"><?= htmlspecialchars($item['size']) ?></span></span>
+                                    <span>Size:
+                                        <span class="current-size" data-size-id="<?= $item['size_id'] ?>">
+                                            <?= htmlspecialchars($item['size']) ?>
+                                        </span>
+                                    </span>
                                     <!-- Optional static color placeholder -->
                                     <span>Color: <span class="current-color">Default</span></span>
                                 </div>
                                 <div>
                                     <span class="customize-option change-size">Change Size</span>
-                                    <span class="customize-option change-color">Change Color</span>
                                 </div>
                             </div>
                             <div class="item-actions">
@@ -140,34 +147,25 @@ if (isset($_SESSION['user_id'])) {
 </div>
 
 <!-- Customization Modal -->
-<div class="modal" id="customizationModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Customize Item</h3>
-            <button class="close-modal">&times;</button>
+<div class="cart-modal" id="customizationModal">
+    <div class="cart-modal-content">
+        <div class="cart-modal-header">
+            <h3 class="cart-modal-title">Customize Item</h3>
+            <button class="close-cart-modal">&times;</button>
         </div>
         <div class="option-group">
             <span class="option-title">Size</span>
             <div class="option-values" id="sizeOptions">
-                <span class="option-value" data-value="XS">XS</span>
-                <span class="option-value selected" data-value="S">S</span>
-                <span class="option-value" data-value="M">M</span>
-                <span class="option-value" data-value="L">L</span>
-                <span class="option-value" data-value="XL">XL</span>
+                <span class="option-value" data-id="1" data-value="XS">XS</span>
+                <span class="option-value" data-id="2" data-value="S">S</span>
+                <span class="option-value" data-id="3" data-value="M">M</span>
+                <span class="option-value" data-id="4" data-value="L">L</span>
+                <span class="option-value" data-id="5" data-value="XL">XL</span>
             </div>
         </div>
-        <div class="option-group">
-            <span class="option-title">Color</span>
-            <div class="option-values" id="colorOptions">
-                <span class="option-value selected" data-value="Champagne">Champagne</span>
-                <span class="option-value" data-value="Ivory">Ivory</span>
-                <span class="option-value" data-value="Black">Black</span>
-                <span class="option-value" data-value="Dusty Rose">Dusty Rose</span>
-            </div>
-        </div>
-        <div class="modal-actions">
-            <button class="modal-btn cancel-btn">Cancel</button>
-            <button class="modal-btn save-btn">Save Changes</button>
+        <div class="cart-modal-actions">
+            <button class="cart-modal-btn cart-cancel-btn">Cancel</button>
+            <button class="cart-modal-btn cart-save-btn">Save Changes</button>
         </div>
     </div>
 </div>

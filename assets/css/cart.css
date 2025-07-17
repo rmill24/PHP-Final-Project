@@ -102,6 +102,16 @@
             justify-content: space-between;
         }
 
+        .item-header a {
+            color: var(--secondary-dark);
+            text-decoration: none;
+        }
+
+        .item-header a:hover{
+            color: var(--primary-taupe);
+            transition: var(--transition);
+        }
+
         .item-header h3 {
             font-family: var(--font-header);
             font-size: 1.5rem;
@@ -425,7 +435,7 @@
         }
 
         /* Customization Modal */
-        .modal {
+        .cart-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -438,7 +448,7 @@
             align-items: center;
         }
 
-        .modal-content {
+        .cart-modal-content {
             background-color: var(--primary-white);
             padding: 2rem;
             border-radius: 8px;
@@ -448,20 +458,20 @@
             overflow-y: auto;
         }
 
-        .modal-header {
+        .cart-modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
 
-        .modal-title {
+        .cart-modal-title {
             font-family: var(--font-header);
             font-size: 1.5rem;
             font-weight: 500;
         }
 
-        .close-modal {
+        .close-cart-modal {
             background: none;
             border: none;
             font-size: 1.5rem;
@@ -506,14 +516,14 @@
             border-color: var(--accent);
         }
 
-        .modal-actions {
+        .cart-modal-actions {
             display: flex;
             justify-content: flex-end;
             gap: 1rem;
             margin-top: 2rem;
         }
 
-        .modal-btn {
+        .cart-modal-btn {
             padding: 0.7rem 1.5rem;
             border-radius: 4px;
             font-family: var(--font-sub);
@@ -521,18 +531,18 @@
             transition: var(--transition);
         }
 
-        .cancel-btn {
+        .cart-cancel-btn {
             background: none;
             border: 1px solid var(--secondary-light);
         }
 
-        .save-btn {
+        .cart-save-btn {
             background-color: var(--accent);
             color: white;
             border: none;
         }
 
-        .save-btn:hover {
+        .cart-save-btn:hover {
             background-color: #3a302b;
         }
 

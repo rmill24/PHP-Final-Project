@@ -1,17 +1,34 @@
 <?php
+require_once __DIR__ . '/../includes/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Dummy login
-    if ($email === "admin@example.com" && $password === "1234") {
-        $_SESSION['user'] = $email;
+    // Fetch user from database
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        echo "error";
+        exit;
+    }
+
+    if (!$user['email_verified']) {
+        echo "unverified";
+        exit;
+    }
+
+    if (password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['first_name'] = $user['first_name'];
         echo "success";
     } else {
         echo "error";
     }
-    exit();
+
+    exit;
 }
 ?>
 
@@ -27,12 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
-                <input type="email" placeholder="Email" class="form-input" required />
+                <input type="email" name="email" id="loginEmail" placeholder="Email" class="form-input" required />
             </div>
             <div class="form-group">
-                <input type="password" placeholder="Password" class="form-input" required />
+                <input type="password" name="password" id="loginPassword" placeholder="Password" class="form-input" required />
             </div>
             <button type="submit" class="sign-in-btn">Sign In</button>
+            <div id="loginError" style="color: red; margin-bottom: 10px;"></div>
         </form>
         <p class="sign-up-text">
             Don't have an account yet?

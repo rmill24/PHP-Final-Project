@@ -411,6 +411,7 @@ footer {
   opacity: 1;
   visibility: visible;
 }
+
 .modal.active {
   opacity: 1;
   display: block;
@@ -461,7 +462,7 @@ footer {
     color: var(--secondary-dark);
     margin-bottom: 12px;
     letter-spacing: -0.5px;
-    margin-left: 25px;
+    margin-left: 45px;
 }
 
 
@@ -470,7 +471,7 @@ footer {
     font-size: 1.3rem;
     color: var(--primary-taupe);
     font-weight: 300;
-    margin-left: 35px;
+    margin-left: 45px;
 }
 
 .form-group {

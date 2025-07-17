@@ -158,7 +158,7 @@
 
         <div class="member">
           <div class="member-img">
-            <img src="assets/img/venusia_icon.png" alt="Janna Ashley H. Quiban" />
+            <img src="assets/img/ash-pic.png" alt="Janna Ashley H. Quiban" />
           </div>
           <h4>Janna Ashley H. Quiban</h4>
           <span>Backend Developer</span>

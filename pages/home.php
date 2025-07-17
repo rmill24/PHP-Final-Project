@@ -61,21 +61,21 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="category-layout">
     <!-- Left Large Card: Casual Dress -->
     <div class="category-large">
-        <img src="assets/img/casual-dress.png" alt="Casual Dress">
+        <a href="index.php?page=store&category=Dresses"><img src="assets/img/casual-dress.png" alt="Casual Dress"></a>
     </div>
 
     <!-- Right Side Small Cards -->
     <div class="category-side">
         <div class="category-small">
-            <img src="assets/img/women-tops.png" alt="Casual Tops">
+            <a href="index.php?page=store&category=Tops"><img src="assets/img/women-tops.png" alt="Casual Tops"></a>
         </div>
         <div class="category-small">
-            <img src="assets/img/women-bottoms.png" alt="Casual Bottoms">
+            <a href="index.php?page=store&category=Bottoms"><img src="assets/img/women-bottoms.png" alt="Casual Bottoms"></a>
         </div>
 
         <!-- Outerwear Banner -->
         <div class="category-banner">
-            <img src="assets/img/outerwear.png" alt="Outerwear">
+            <a href="index.php?page=store&category=Outerwear"><img src="assets/img/outerwear.png" alt="Casual Outerwear"></a>
         </div>
     </div>
 </div>

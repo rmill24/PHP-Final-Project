@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../includes/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -23,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['first_name'] = $user['first_name'];
-        echo "success";
+        echo "redirect:profile";
     } else {
         echo "error";
     }

@@ -33,7 +33,7 @@
         <!-- User and Cart Icons + Mobile Menu Toggle -->
         <div class="right-section">
             <div class="nav-icons">
-                <a href="#" onclick="openModal()"><i class="far fa-user"></i></a>
+                <a href="#" id="profileLink"><i class="far fa-user"></i></a>
                 <a href="index.php?page=cart" class="<?= $current_page === 'cart' ? 'active' : '' ?>"><i class="fas fa-shopping-bag"></i></a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle navigation">

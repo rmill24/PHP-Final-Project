@@ -67,27 +67,20 @@ function handleLogin(e) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(
-      password
-    )}`,
+    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
   })
     .then((response) => response.text())
     .then((result) => {
+      console.log("Server response:", result);
 
-      console.log("Server response:", result); // Add this
+      const errorDiv = document.getElementById("loginError");
 
-      if (result === "success") {
-        window.location.href = "index.php?page=home";
+      if (result === "redirect:profile") {
+        window.location.href = "/PHP-Final-Project/index.php?page=user";
+      } else if (result === "unverified") {
+        errorDiv.textContent = "⚠️ Please verify your email before logging in.";
       } else {
-        const errorDiv = document.getElementById("loginError");
-        if (result === "success") {
-          window.location.href = "index.php?page=home";
-        } else if (result === "unverified") {
-          errorDiv.textContent =
-            "⚠️ Please verify your email before logging in.";
-        } else {
-          errorDiv.textContent = "❌ Invalid email or password.";
-        }
+        errorDiv.textContent = "❌ Invalid email or password.";
       }
     })
     .catch((err) => {
@@ -95,3 +88,29 @@ function handleLogin(e) {
       alert("❌ An error occurred. Try again.");
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const profileLink = document.getElementById("profileLink");
+
+  if (profileLink) {
+    profileLink.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      fetch("/PHP-Final-Project/actions/check_login.php")
+        .then((res) => res.text())
+        .then((status) => {
+          if (status === "logged_in") {
+            window.location.href = "/PHP-Final-Project/index.php?page=user";
+          } else {
+            openModal(); // login modal
+          }
+        })
+        .catch((err) => {
+          console.error("Error checking login status:", err);
+          openModal(); // fallback to modal
+        });
+    });
+  }
+});
+
+

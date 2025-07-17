@@ -5,24 +5,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once 'includes/db.php';
+require_once 'models/UserModel.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php?page=home');
     exit;
 }
 
-// Fetch user data from the database
-$stmt = $db->prepare("SELECT first_name, last_name, email, phone_number, address FROM users WHERE id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$userModel = new UserModel($db);
+$user = $userModel->getById($_SESSION['user_id']);
 
-// Fallback if user not found
 if (!$user) {
-    echo "<p>User not found.</p>";
+    echo "User not found.";
     exit;
 }
 ?>
-
 
 <!-- User Profile Section -->
 <section class="user-profile">

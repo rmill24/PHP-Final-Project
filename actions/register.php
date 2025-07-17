@@ -1,28 +1,27 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/UserModel.php';
+
+$userModel = new UserModel($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first = $_POST['firstName'];
-    $last = $_POST['lastName'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $data = [
+        'first_name' => $_POST['firstName'],
+        'last_name'  => $_POST['lastName'],
+        'email'      => $_POST['email'],
+        'phone'      => $_POST['phone'],
+        'address'    => $_POST['address'],
+        'password'   => $_POST['password']
+    ];
+
+    $userId = $userModel->register($data);
     $token = bin2hex(random_bytes(16));
+    $userModel->saveVerificationToken($userId, $token);
 
-    $stmt = $db->prepare("INSERT INTO users (first_name, last_name, email, phone_number, address, password, email_verified) VALUES (?, ?, ?, ?, ?, ?, 0)");
-    $stmt->execute([$first, $last, $email, $phone, $address, $password]);
+    // For local dev; change when hosted
+    $verifyLink = "http://localhost/PHP-Final-Project/verify.php?user=$userId&token=$token";
 
-    $userId = $db->lastInsertId();
-
-    // Save token in the database
-    $stmt = $db->prepare("INSERT INTO verification_tokens (user_id, token) VALUES (?, ?)");
-    $stmt->execute([$userId, $token]);
-
-    // Change this to real hosted domain
-    $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
-
-    // local testing
+    // Output or email this link
     echo "Check your email to verify your account:<br>";
     echo "<a href='$verifyLink'>$verifyLink</a>";
 

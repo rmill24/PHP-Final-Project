@@ -1,24 +1,11 @@
 <?php
-require_once 'includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/ProductModel.php';
 
 $category = $_GET['category'] ?? null;
-$params = [];
-
-$sql = "SELECT p.*, c.name AS category_name FROM products p
-        LEFT JOIN categories c ON p.category_id = c.id";
-
-if ($category) {
-    $sql .= " WHERE c.name = ?";
-    $params[] = $category;
-}
-
-$sql .= " ORDER BY p.name";
-
-$stmt = $db->prepare($sql);
-$stmt->execute($params);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$productModel = new ProductModel($db);
+$products = $productModel->getAll($category);
 ?>
-
 
 <div class="container">
 

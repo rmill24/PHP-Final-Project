@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
 
 $stmt = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 4");
 $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -101,7 +101,10 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <h3><?= htmlspecialchars($product['name']) ?></h3>
                         <p><?= htmlspecialchars($product['product_details']) ?></p>
                         <span class="price">P<?= number_format($product['price'], 2) ?></span>
-                        <button class="add-to-cart" type="button">Add to Cart</button>
+                        <form method="POST" action="actions/add_to_cart.php" style="display:inline;">
+                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                            <button class="add-to-cart" type="submit">Add to Cart</button>
+                        </form>
                     </div>
                 </a>
             <?php endforeach; ?>

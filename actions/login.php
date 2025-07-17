@@ -4,34 +4,31 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/UserModel.php'; // ✅ models, not model
+
+$userModel = new UserModel($db);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Fetch user from database
-    $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $userModel->login($email, $password);
 
     if (!$user) {
-        echo "error";
+        // Check if the email exists but is unverified
+        $unverifiedCheck = $userModel->getByEmail($email);
+        if ($unverifiedCheck && !$unverifiedCheck['email_verified']) {
+            echo "unverified";
+        } else {
+            echo "error";
+        }
         exit;
     }
 
-    if (!$user['email_verified']) {
-        echo "unverified";
-        exit;
-    }
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['first_name'] = $user['first_name'];
 
-    if (password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['first_name'] = $user['first_name'];
-        echo "redirect:profile";
-    } else {
-        echo "error";
-    }
-
+    echo "redirect:profile";
     exit;
 }
 ?>

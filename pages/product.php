@@ -1,23 +1,21 @@
 <?php
-require_once 'includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/ProductModel.php';
 
-$product_id = $_GET['product_id'] ?? null;
+$productModel = new ProductModel($db);
+$productId = $_GET['product_id'] ?? null;
 
-if (!$product_id) {
+if (!$productId) {
     echo "<p>Product not found.</p>";
     exit;
 }
 
-$stmt = $db->prepare("SELECT * FROM products WHERE id = ?");
-$stmt->execute([$product_id]);
-$product = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$product = $productModel->getById($productId);
 if (!$product) {
     echo "<p>Product not found.</p>";
     exit;
 }
 ?>
-
 
 <div class="container">
     <div class="product-container">
@@ -44,7 +42,10 @@ if (!$product) {
                 </div>
             </div>
             <div class="action-grid">
-                <button>Add to Cart</button>
+                <form method="POST" action="actions/add_to_cart.php" style="display:inline;">
+                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                    <button type="submit">Add to Cart</button>
+                </form>
                 <button>Buy Now</button>
             </div>
         </div>

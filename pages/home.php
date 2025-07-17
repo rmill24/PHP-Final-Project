@@ -1,3 +1,16 @@
+<?php
+require_once 'includes/db.php';
+
+$stmt = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 4");
+$featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<?php if (isset($_GET['registered'])): ?>
+    <div class="alert alert-success" style="text-align: center; padding: 1rem; background-color: #d4edda; color: #155724; border-radius: 5px; margin: 20px auto; max-width: 600px;">
+        ✅ Thank you for registering! Please check your email to verify your account.
+    </div>
+<?php endif; ?>
+
 <div class="carousel-container">
     <!-- Bootstrap Carousel -->
     <div id="carouselVenusia" class="carousel slide" data-bs-ride="carousel">
@@ -9,7 +22,6 @@
             <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="3" aria-label="Slide 4"></button>
             <button type="button" data-bs-target="#carouselVenusia" data-bs-slide-to="4" aria-label="Slide 5"></button>
         </div>
-
 
         <!-- Carousel Content -->
         <div class="carousel-inner shadow">
@@ -23,24 +35,20 @@
                 </div>
             </div>
 
-
             <!-- Slide 2 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/53/29/63/53296318765b637b8ccd9b50082a4b07.jpg" class="d-block w-100" alt="Limited Edition Items">
             </div>
-
 
             <!-- Slide 3 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/dd/35/45/dd354522de7b5d53ab1e006ee8dfd7ef.jpg" class="d-block w-100" alt="Special Discounts">
             </div>
 
-
             <!-- Slide 4 -->
             <div class="carousel-item">
                 <img src="https://i.pinimg.com/1200x/da/4a/c3/da4ac365fcfd75f768d0fd14e50f0878.jpg" class="d-block w-100" alt="Summer Collection">
             </div>
-
 
             <!-- Slide 5 -->
             <div class="carousel-item">
@@ -50,15 +58,11 @@
     </div>
 </div>
 
-
 <div class="category-layout">
     <!-- Left Large Card: Casual Dress -->
     <div class="category-large">
         <img src="assets/img/casual-dress.png" alt="Casual Dress">
     </div>
-
-
-
 
     <!-- Right Side Small Cards -->
     <div class="category-side">
@@ -69,18 +73,12 @@
             <img src="assets/img/women-bottoms.png" alt="Casual Bottoms">
         </div>
 
-
-
-
         <!-- Outerwear Banner -->
         <div class="category-banner">
             <img src="assets/img/outerwear.png" alt="Outerwear">
         </div>
     </div>
 </div>
-
-
-
 
 <!-- Featured Collection -->
 <section class="featured">
@@ -93,60 +91,21 @@
             </div>
         </div>
         <div class="product-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Product 1">
-                </div>
-                <div class="product-info">
-                    <h3>Linen Wrap Dress</h3>
-                    <p>Breathable and stylish</p>
-                    <span class="price">$89.99</span>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Product 2">
-                </div>
-                <div class="product-info">
-                    <h3>Wide Leg Pants</h3>
-                    <p>Comfort meets elegance</p>
-                    <span class="price">$79.99</span>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Product 3">
-                </div>
-                <div class="product-info">
-                    <h3>Silk Blouse</h3>
-                    <p>Luxurious feel</p>
-                    <span class="price">$65.99</span>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Product 4">
-                </div>
-                <div class="product-info">
-                    <h3>Denim Jacket</h3>
-                    <p>Classic and versatile</p>
-                    <span class="price">$95.99</span>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
+            <!-- Dynamic products -->
+            <?php foreach ($featuredProducts as $product): ?>
+                <a href="?page=product&product_id=<?= $product['id'] ?>" class="product-card">
+                    <div class="product-image">
+                        <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                    </div>
+                    <div class="product-info">
+                        <h3><?= htmlspecialchars($product['name']) ?></h3>
+                        <p><?= htmlspecialchars($product['product_details']) ?></p>
+                        <span class="price">P<?= number_format($product['price'], 2) ?></span>
+                        <button class="add-to-cart" type="button">Add to Cart</button>
+                    </div>
+                </a>
+            <?php endforeach; ?>
         </div>
-
-
         <!-- Banner -->
         <div class="promo-banner">
             <img src="assets/img/casual-store.png" alt="Summer Sale - 30% Off Everything">
@@ -163,7 +122,7 @@
             <p>Join our list and enjoy early access to new drops, exclusive styles, and timeless pieces you'll keep reaching for.</p>
         </div>
 
-        <form class="registration-form" action="register.php" method="POST">
+        <form class="registration-form" action="actions/register.php" method="POST">
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName">First Name</label>
@@ -199,7 +158,7 @@
                     <input type="email" id="email" name="email" required>
                 </div>
             </div>
-
+            <div id="formErrors" style="color: var(--secondary-dark); font-weight: bold"></div>
             <button type="submit" class="register-btn">Register</button>
         </form>
     </div>

@@ -45,6 +45,10 @@ h1 {
   padding: 1rem;
 }
 
+.product-grid a {
+  text-decoration: none;
+}
+
 .product-card {
   display: flex;
   flex-direction: column;

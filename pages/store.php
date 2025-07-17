@@ -36,7 +36,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="product-grid">
 
         <?php foreach ($products as $product): ?>
-            <div class="product-card">
+            <a href="?page=product&product_id=<?= $product['id'] ?>" class="product-card">
                 <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
                 <div class="product-info">
                     <h3><?= htmlspecialchars($product['name']) ?></h3>
@@ -46,7 +46,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <button type="submit">Add to Cart</button>
                     </form>
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
 
     </div>

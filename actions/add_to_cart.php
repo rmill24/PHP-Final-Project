@@ -2,13 +2,15 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/CartModel.php';
 
 if (!isset($_SESSION['user_id'])) {
-    http_response_code(403);
-    echo "You must be logged in.";
+    echo "unauthorized";
     exit;
 }
+
 
 $userId = $_SESSION['user_id'];
 $productId = $_POST['product_id'] ?? null;
@@ -21,29 +23,7 @@ if (!$productId || !$sizeId) {
     exit;
 }
 
-// Ensure cart exists for the user
-$stmt = $db->prepare("SELECT id FROM cart WHERE user_id = ?");
-$stmt->execute([$userId]);
-$cartId = $stmt->fetchColumn();
-
-if (!$cartId) {
-    $stmt = $db->prepare("INSERT INTO cart (user_id) VALUES (?)");
-    $stmt->execute([$userId]);
-    $cartId = $db->lastInsertId();
-}
-
-// Check if item already exists
-$stmt = $db->prepare("SELECT id FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ?");
-$stmt->execute([$cartId, $productId, $sizeId]);
-$itemId = $stmt->fetchColumn();
-
-if ($itemId) {
-    // Update quantity
-    $stmt = $db->prepare("UPDATE cart_item SET quantity = quantity + ? WHERE id = ?");
-    $stmt->execute([$quantity, $itemId]);
-} else {
-    $stmt = $db->prepare("INSERT INTO cart_item (cart_id, product_id, size_id, quantity) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$cartId, $productId, $sizeId, $quantity]);
-}
+$cartModel = new CartModel($db, $userId);
+$cartModel->addOrUpdateItem($productId, $sizeId, $quantity);
 
 echo "added";

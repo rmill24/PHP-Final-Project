@@ -15,6 +15,17 @@ if (!$product) {
     echo "<p>Product not found.</p>";
     exit;
 }
+
+// Get sizes
+$stmt = $db->prepare("
+    SELECT ps.id AS product_size_id, s.label
+    FROM product_sizes ps
+    JOIN sizes s ON ps.size_id = s.id
+    WHERE ps.product_id = ?
+");
+
+$stmt->execute([$productId]);
+$sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="container">
@@ -25,30 +36,39 @@ if (!$product) {
         <div class="product-details">
             <div>
                 <h1><?= htmlspecialchars($product['name']) ?></h1>
-                <p>★★★★⯪ 4.9 (350 Reviews)</p> <!-- optional static for now -->
+                <p>★★★★⯪ 4.9 (350 Reviews)</p>
             </div>
             <div>
                 <h2>P<?= number_format($product['price'], 2) ?></h2>
                 <br>
                 <p><?= nl2br(htmlspecialchars($product['product_details'])) ?></p>
             </div>
-            <div>
-                <p><strong>Available Size</strong></p>
-                <div class="size-grid">
-                    <button>S</button>
-                    <button>M</button>
-                    <button>L</button>
-                    <button>XL</button>
+
+            <form method="POST" action="actions/add_to_cart.php" id="addToCartForm" style="display:inline;">
+                <div>
+                    <p><strong>Available Size</strong></p>
+                    <div class="size-grid">
+                        <?php foreach ($sizes as $size): ?>
+                            <button type="button" class="size-option" data-size-id="<?= $size['product_size_id'] ?>">
+                                <?= htmlspecialchars($size['label']) ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                    <input type="hidden" name="size_id" id="selectedSizeInput">
                 </div>
-            </div>
-            <div class="action-grid">
-                <form method="POST" action="actions/add_to_cart.php" style="display:inline;">
+
+                <div class="action-grid">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <button type="submit">Add to Cart</button>
-                </form>
-                <button>Buy Now</button>
-            </div>
+                    <button type="submit" id="addToCartBtn">Add to Cart</button>
+                    <button type="button">Buy Now</button> <!-- Optional: connect this later -->
+                </div>
+
+                <!-- Message container -->
+                <div id="cartMessage" style="margin-top: 10px; font-weight: bold;"></div>
+            </form>
+
         </div>
+
     </div>
 
     <div class="customer-reviews">

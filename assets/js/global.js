@@ -113,4 +113,39 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.add-to-cart-form').forEach(form => {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const productId = form.getAttribute('data-product-id');
+      const sizeId = form.getAttribute('data-size-id'); // update this later to get from a dropdown
+      const quantity = 1;
+
+      fetch('actions/add_to_cart.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `product_id=${encodeURIComponent(productId)}&size_id=${encodeURIComponent(sizeId)}&quantity=${quantity}`
+      })
+      .then(res => res.text())
+      .then(response => {
+        if (response === 'added') {
+          alert('✅ Item added to cart!');
+        } else if (response === 'unauthorized') {
+          alert('⚠️ Please log in to add items to your cart.');
+        } else {
+          alert('❌ Something went wrong.');
+        }
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        alert('❌ Server error.');
+      });
+    });
+  });
+});
+
+
 

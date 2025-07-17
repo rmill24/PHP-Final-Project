@@ -56,6 +56,10 @@ body {
   justify-content: space-between;
 }
 
+.action-grid{
+  margin-top: 1rem;
+}
+
 .action-grid button {
   width: 150px;
   margin-right: 1rem;
@@ -214,10 +218,6 @@ body {
 
   .product-details {
     width: 100%;
-  }
-
-  .action-grid {
-    margin-top: 1rem;
   }
 
   .action-grid button {

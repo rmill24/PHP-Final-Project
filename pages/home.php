@@ -101,10 +101,11 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <h3><?= htmlspecialchars($product['name']) ?></h3>
                         <p><?= htmlspecialchars($product['product_details']) ?></p>
                         <span class="price">P<?= number_format($product['price'], 2) ?></span>
-                        <form method="POST" action="actions/add_to_cart.php" style="display:inline;">
+                        <form class="add-to-cart-form" data-product-id="<?= $product['id'] ?>" data-size-id="1">
                             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                             <button class="add-to-cart" type="submit">Add to Cart</button>
                         </form>
+
                     </div>
                 </a>
             <?php endforeach; ?>
@@ -154,7 +155,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <input type="tel" id="phone" name="phone" required>
                 </div>
             </div>
-            
+
             <div class="form-row">
                 <div class="form-group full-width">
                     <label for="address">Address</label>

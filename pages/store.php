@@ -28,7 +28,7 @@ $products = $productModel->getAll($category);
                 <div class="product-info">
                     <h3><?= htmlspecialchars($product['name']) ?></h3>
                     <p class="price">P<?= number_format($product['price'], 2) ?></p>
-                    <form method="POST" action="actions/add_to_cart.php">
+                    <form class="add-to-cart-form" data-product-id="<?= $product['id'] ?>" data-size-id="1">
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                         <button type="submit">Add to Cart</button>
                     </form>

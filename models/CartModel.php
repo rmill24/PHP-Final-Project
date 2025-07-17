@@ -21,6 +21,21 @@ class CartModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addOrUpdateItem($productId, $sizeId, $quantity) {
+        $cartId = $this->getOrCreateCartId();
+
+        $stmt = $this->db->prepare("SELECT id FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ?");
+        $stmt->execute([$cartId, $productId, $sizeId]);
+        $existingItemId = $stmt->fetchColumn();
+
+        if ($existingItemId) {
+            $stmt = $this->db->prepare("UPDATE cart_item SET quantity = quantity + ? WHERE id = ?");
+            return $stmt->execute([$quantity, $existingItemId]);
+        } else {
+            return $this->addItem($productId, $sizeId, $quantity);
+        }
+    }
+
     public function addItem($productId, $sizeId, $quantity) {
         $cartId = $this->getOrCreateCartId();
 
@@ -39,3 +54,4 @@ class CartModel {
         return $this->db->lastInsertId();
     }
 }
+

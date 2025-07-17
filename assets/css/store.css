@@ -87,6 +87,13 @@ h1 {
   padding: 1rem;
 }
 
+.price {
+  font-family: var(--font-sub);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--accent-light);
+}
+
 .product-info form {
   margin-top: auto;
 }

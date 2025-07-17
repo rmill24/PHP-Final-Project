@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateCartTotals() {
     let subtotal = 0;
     let selectedCount = 0;
+    let discount = 0;
 
     document.querySelectorAll(".cart-item").forEach((item) => {
       const checkbox = item.querySelector(".item-checkbox");
@@ -155,10 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    const tax = subtotal * 0.09;
-    let shipping = 0;
-    let discount = 0;
-
     if (activePromo) {
       if (activePromo.type === "percent") {
         discount = subtotal * activePromo.discount;
@@ -169,6 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
       discountAmount.textContent = `-₱${discount.toFixed(2)}`;
     }
 
+    const tax = (subtotal - discount) * 0.09;
+    let shipping = 0;
     const total = subtotal + tax + shipping - discount;
 
     document.getElementById("selected-count").textContent = selectedCount;
@@ -289,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
           })
             .then((res) => res.text())
             .then((response) => {
-
               console.log("Server response:", response);
 
               if (response === "updated") {

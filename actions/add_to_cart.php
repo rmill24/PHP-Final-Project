@@ -12,7 +12,7 @@ $quantity = $_POST['quantity'] ?? 1;
 if (!$productId || !$sizeId) {
     error_log("Missing data: product_id=$productId, size_id=$sizeId");
     http_response_code(400);
-    echo "Invalid request.";
+    header("Location: ../index.php?page=error");
     exit;
 }
 

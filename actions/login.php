@@ -19,8 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $unverifiedCheck = $userModel->getByEmail($email);
         if ($unverifiedCheck && !$unverifiedCheck['email_verified']) {
             echo "unverified";
+            header("Location: ../index.php?page=unverified");
+            exit;
         } else {
-            echo "error";
+            header("Location: ../index.php?page=error");
+            exit;
         }
         exit;
     }
@@ -31,4 +34,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     echo "redirect:profile";
     exit;
 }
-?>

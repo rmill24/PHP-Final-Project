@@ -63,9 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ";
 
         $mail->send();
-        echo "✅ Verification email sent! Check your inbox.";
+        header('Location: ../index.php?page=email_sent');
+        exit;
     } catch (Exception $e) {
-        echo "❌ Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
 
         // log failure for debugging
         file_put_contents(__DIR__ . '/../mail_error.log', $mail->ErrorInfo . "\n", FILE_APPEND);

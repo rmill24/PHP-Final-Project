@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../models/UserModel.php'; // ✅ models, not model
+require_once __DIR__ . '/../models/UserModel.php';
 
 $userModel = new UserModel($db);
 

@@ -2,7 +2,7 @@
 session_start();
 
 $page = $_GET['page'] ?? 'home';
-$allowed_pages = ['home', 'about', 'store', 'cart', 'payment', 'user', 'product', 'order_success', 'order_detail'];
+$allowed_pages = ['home', 'about', 'store', 'cart', 'payment', 'user', 'product', 'order_success', 'order_detail','verified'];
 
 if (!in_array($page, $allowed_pages)) {
     $page = 'home';
@@ -18,7 +18,8 @@ $page_titles = [
     'product' => 'Product | Venusia',
     'user' => 'User Profile | Venusia',
     'order_success' => 'Order Success | Venusia',
-    'order_detail' => 'Order Detail | Venusia'
+    'order_detail' => 'Order Detail | Venusia',
+    'verified' => 'Email Verified | Venusia'
 ];
 
 $page_title = $page_titles[$page] ?? 'Venusia';

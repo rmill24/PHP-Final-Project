@@ -1,23 +1,28 @@
 <?php
-$config = require __DIR__ . '/../localconfig.php';
+$env = require __DIR__ . '/../.env.php';
+
+// try {
+//     $db = new PDO(
+//         "mysql:host={$env['DB_HOST']};dbname={$env['DB_NAME']};charset=utf8mb4",
+//         $env['DB_USER'],
+//         $env['DB_PASS']
+//     );
+//     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch (PDOException $e) {
+//     die("DB error: " . $e->getMessage());
+// }
+
+// FOR LOCAL TESTING
+$env = require __DIR__ . '/../.env.php';
 
 try {
     $db = new PDO(
-        "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4",
-        $config['username'],
-        $config['password']
+        "mysql:host={$env['DB_LOCALHOST']};dbname={$env['DB_LOCALNAME']};charset=utf8mb4",
+        $env['DB_LOCALUSER'],
+        $env['DB_LOCALPASS']
     );
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("DB error: " . $e->getMessage());
 }
 
-// debugging
-// try {
-//     $pdo = new PDO("mysql:host=localhost;dbname=venusia_db", "root", "");
-//     echo "Connected!";
-// } catch (PDOException $e) {
-//     echo "Error: " . $e->getMessage();
-// }
-
-?>

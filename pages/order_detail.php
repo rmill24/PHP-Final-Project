@@ -32,18 +32,23 @@ if (!$order) {
 $orderItems = $userModel->getOrderItems($orderId);
 ?>
 <div class="container">
-    <h1>Order #ORD-<?= htmlspecialchars($order['id']) ?></h1>
+    <h1>Order ID#<?= htmlspecialchars($order['id']) ?></h1>
     <h5>Placed on: <?= htmlspecialchars($order['created_at']) ?></h5>
+    <?php
+    if ($order['discount_code']) {
+        echo '<h5>Discount Code: ' . htmlspecialchars($order['discount_code']) . '</h5>';
+    }
+    ?>
     <h5>Total: ₱<?= htmlspecialchars(number_format($order['total'], 2)) ?></h5>
     <br>
     <h2>Items</h2>
-        <?php foreach ($orderItems as $item): ?>
-            <div class="item-card">
-                <img src="<?= htmlspecialchars($item['product_image']) ?>">
-                <?= htmlspecialchars($item['product_name']) ?>
-                (Size: <?= htmlspecialchars($item['size_label']) ?>)
-                x<?= (int)$item['quantity'] ?> - ₱<?= number_format($item['price'], 2) ?>
-            </div>
-        <?php endforeach; ?>
-        <a href="index.php?page=user"><button>Back to Profile</button></a>
+    <?php foreach ($orderItems as $item): ?>
+        <div class="item-card">
+            <img src="<?= htmlspecialchars($item['product_image']) ?>">
+            <?= htmlspecialchars($item['product_name']) ?>
+            (Size: <?= htmlspecialchars($item['size_label']) ?>)
+            x<?= (int)$item['quantity'] ?> - ₱<?= number_format($item['price'], 2) ?>
+        </div>
+    <?php endforeach; ?>
+    <a href="index.php?page=user"><button>Back to Profile</button></a>
 </div>

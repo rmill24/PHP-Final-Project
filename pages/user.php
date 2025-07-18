@@ -93,7 +93,7 @@ if (!$user) {
                         <?php foreach ($orders as $order): ?>
                             <div class="order-card">
                                 <div class="order-header">
-                                    <span class="order-number">#ORD-<?= htmlspecialchars($order['id']) ?></span>
+                                    <span class="order-number">ORDER ID#<?= htmlspecialchars($order['id']) ?></span>
                                     <span class="order-date"><?= date('F j, Y', strtotime($order['created_at'])) ?></span>
                                     <!-- Assuming you have a status column, else remove or hardcode -->
                                     <span class="order-status delivered">Delivered</span>

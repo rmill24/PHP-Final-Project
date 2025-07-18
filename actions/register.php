@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = bin2hex(random_bytes(16));
     $userModel->saveVerificationToken($userId, $token);
 
-    // $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
+    $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
 
     // local testing
-    $verifyLink = "localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
+    // $verifyLink = "localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
 
     // Send email using PHPMailer
     $mail = new PHPMailer(true);

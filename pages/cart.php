@@ -65,7 +65,7 @@ if (isset($_SESSION['user_id'])) {
                                             <?= htmlspecialchars($item['size']) ?>
                                         </span>
                                     </span>
-                                    <!-- Optional static color placeholder -->
+                                    <!-- static color placeholder -->
                                     <span>Color: <span class="current-color">Default</span></span>
                                 </div>
                                 <div>

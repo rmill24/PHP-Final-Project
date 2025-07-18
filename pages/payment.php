@@ -18,23 +18,28 @@ if (empty($cartItems)) {
     exit;
 }
 
-// Calculate totals
 $subtotal = 0;
+
 foreach ($cartItems as $item) {
     $subtotal += $item['price'] * $item['quantity'];
 }
 
-// Handle discounts
-$discount = $_SESSION['discount']['amount'] ?? 0;
-$discountCode = $_SESSION['discount']['code'] ?? '';
+$discount = 0;
+$shipping = 0;
+$promo = $_SESSION['discount'] ?? null;
+$discountCode = $promo['code'] ?? '';
 
-$shipping = 0; // Free
-$taxRate = 0.09;
-$tax = ($subtotal - $discount) * $taxRate;
-$total = $subtotal - $discount + $shipping + $tax;
+if ($promo) {
+    if ($promo['type'] === 'percent') {
+        $discount = $subtotal * $promo['amount'];
+    } elseif ($promo['type'] === 'fixed-shipping') {
+        $shipping = -$promo['amount'];
+    }
+}
 
-// Clear session discount (optional)
-unset($_SESSION['discount']);
+$tax = ($subtotal - $discount) * 0.09;
+$total = $subtotal + $tax + $shipping - $discount;
+
 ?>
 
 

@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const form = document.querySelector(".registration-form");
   const showErrors = (errors) => {
-    document.getElementById("formErrors").innerHTML = errors.map(e => `<p>• ${e}</p>`).join("");
+    document.getElementById("formErrors").innerHTML = errors.map(e => `<p>❌ ${e}</p>`).join("");
   };
 
   if (form) {
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { test: /^[A-Za-z\s'-]+$/.test(getValue("lastName")), message: "Last name should only contain letters and spaces." },
         { test: /^\d{11}$/.test(getValue("phone")), message: "Phone number must be exactly 11 digits." },
         { test: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(getValue("email")), message: "Email format is invalid." },
-        { test: pw.length >= 6, message: "Password must be at least 6 characters." },
+        { test: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{12,}$/.test(pw), message: "Password must be at least 12 characters with one uppercase letter, one number, and one symbol." },
         { test: pw === cpw, message: "Passwords do not match." },
         { test: getValue("address").length >= 8, message: "Address must be at least 8 characters long." }
       ];

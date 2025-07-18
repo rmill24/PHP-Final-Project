@@ -1,17 +1,9 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../models/CartModel.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo "unauthorized";
-    exit;
-}
-
-$userId = $_SESSION['user_id'];
+$userId = requireAuthAjax();
 $cartItemId = $_POST['cart_item_id'] ?? null;
 $selected = isset($_POST['selected']) ? (bool)$_POST['selected'] : false;
 

@@ -1,29 +1,13 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../models/CartModel.php';
 
 $cartItems = [];
 
 if (isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
-
-    $stmt = $db->prepare("SELECT id FROM cart WHERE user_id = ?");
-    $stmt->execute([$userId]);
-    $cartId = $stmt->fetchColumn();
-
-    if ($cartId) {
-        $stmt = $db->prepare("
-            SELECT ci.id AS cart_item_id, ci.product_id, ci.size_id, ci.quantity, ci.selected, p.name, p.price, p.image_url, s.label AS size
-            FROM cart_item ci
-            JOIN products p ON ci.product_id = p.id
-            JOIN sizes s ON ci.size_id = s.id
-            WHERE ci.cart_id = ?
-        ");
-        $stmt->execute([$cartId]);
-        $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $cartModel = new CartModel($db, $_SESSION['user_id']);
+    $cartItems = $cartModel->getCart();
 }
 
 ?>
@@ -62,7 +46,7 @@ if (isset($_SESSION['user_id'])) {
                                 <div class="item-meta">
                                     <span>Size:
                                         <span class="current-size" data-size-id="<?= $item['size_id'] ?>">
-                                            <?= htmlspecialchars($item['size']) ?>
+                                            <?= htmlspecialchars($item['size_label']) ?>
                                         </span>
                                     </span>
                                     <!-- static color placeholder -->

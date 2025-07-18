@@ -1,12 +1,8 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo "Unauthorized";
-    exit;
-}
+requireAuthAjax("Unauthorized");
 
 $cartItemId = $_POST['cart_item_id'] ?? null;
 

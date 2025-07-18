@@ -1,169 +1,86 @@
-document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
-            const tabs = document.querySelectorAll('.method-tab');
-            const contents = document.querySelectorAll('.method-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    contents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    tab.classList.add('active');
-                    const tabId = tab.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-            
-            // Format credit card number input
-            const cardNumberInput = document.getElementById('card-number');
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\s+/g, '');
-                    if (value.length > 0) {
-                        value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
-                    }
-                    e.target.value = value;
-                });
-            }
-            
-            // Format expiry date input
-            const expiryDateInput = document.getElementById('expiry-date');
-            if (expiryDateInput) {
-                expiryDateInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 2) {
-                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                    }
-                    e.target.value = value;
-                });
-            }
+document.addEventListener('DOMContentLoaded', () => {
+  // Tab switching
+  document.querySelectorAll('.method-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.method-tab, .method-content').forEach(el => el.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
 
-            // Format mobile number inputs
-            const mobileInputs = document.querySelectorAll('input[type="tel"]');
-            mobileInputs.forEach(input => {
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 0) {
-                        value = value.substring(0, 11);
-                    }
-                    e.target.value = value;
-                });
-            });
+  // Input formatters
+  const formatInput = (selector, maxLength, pattern, formatter = val => val) => {
+    document.querySelectorAll(selector).forEach(input => {
+      input.addEventListener('input', e => {
+        let value = e.target.value.replace(pattern, '');
+        e.target.value = formatter(value.substring(0, maxLength));
+      });
+    });
+  };
 
-            // Format OTP inputs
-            const otpInputs = document.querySelectorAll('input[placeholder*="OTP"]');
-            otpInputs.forEach(input => {
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 0) {
-                        value = value.substring(0, 6);
-                    }
-                    e.target.value = value;
-                });
-            });
+  formatInput('#card-number', 19, /\D/g, val => val.match(/.{1,4}/g)?.join(' ') || val);
+  formatInput('#expiry-date', 4, /\D/g, val => val.length > 2 ? val.slice(0, 2) + '/' + val.slice(2) : val);
+  formatInput('input[type="tel"]', 11, /\D/g);
+  formatInput('input[placeholder*="OTP"]', 6, /\D/g);
+  formatInput('#gcash-pin', 4, /\D/g);
 
-            // Format GCash MPIN
-            const gcashPinInput = document.getElementById('gcash-pin');
-            if (gcashPinInput) {
-                gcashPinInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 0) {
-                        value = value.substring(0, 4);
-                    }
-                    e.target.value = value;
-                });
-            }
+  // Validators
+  const isValid = {
+    cardNumber: val => /^\d{16}$/.test(val.replace(/\s+/g, '')),
+    expiryDate: val => /^\d{2}\/\d{2}$/.test(val),
+    cvv: val => /^\d{3,4}$/.test(val),
+    name: val => val.trim().length > 0,
+    mobile: val => /^\d{11}$/.test(val),
+    otp: val => /^\d{6}$/.test(val),
+    mpin: val => /^\d{4}$/.test(val),
+    accountNumber: val => /^\d{10}$/.test(val)
+  };
 
-            // Form validation for credit card
-            const paymentForm = document.getElementById('payment-form');
-            if (paymentForm) {
-                paymentForm.addEventListener('submit', function(e) {
-                    const cardNumber = document.getElementById('card-number').value.replace(/\s+/g, '');
-                    const expiryDate = document.getElementById('expiry-date').value;
-                    const cvv = document.getElementById('cvv').value;
-                    const cardName = document.getElementById('card-name').value;
+  const validateForm = (fields, messages, e) => {
+    for (let i = 0; i < fields.length; i++) {
+      if (!fields[i].test(messages[i].value)) {
+        alert(messages[i].error);
+        e.preventDefault();
+        return false;
+      }
+    }
+    return true;
+  };
 
-                    if (cardNumber.length < 16 || !/^\d+$/.test(cardNumber)) {
-                        alert('Please enter a valid card number');
-                        e.preventDefault();
-                        return;
-                    }
+  document.getElementById('payment-form')?.addEventListener('submit', e => {
+    validateForm(
+      [isValid.cardNumber, isValid.expiryDate, isValid.cvv, isValid.name],
+      [
+        { value: document.getElementById('card-number').value, error: 'Please enter a valid card number' },
+        { value: document.getElementById('expiry-date').value, error: 'Enter expiry date in MM/YY format' },
+        { value: document.getElementById('cvv').value, error: 'Enter a valid CVV' },
+        { value: document.getElementById('card-name').value, error: 'Enter the name on your card' }
+      ],
+      e
+    );
+  });
 
-                    if (!expiryDate.match(/^\d{2}\/\d{2}$/)) {
-                        alert('Please enter a valid expiry date in MM/YY format');
-                        e.preventDefault();
-                        return;
-                    }
+  document.getElementById('seabank-form')?.addEventListener('submit', e => {
+    validateForm(
+      [isValid.accountNumber, isValid.mobile, isValid.otp],
+      [
+        { value: document.getElementById('seabank-account').value, error: 'Enter a valid 10-digit account number' },
+        { value: document.getElementById('seabank-mobile').value, error: 'Enter an 11-digit mobile number' },
+        { value: document.getElementById('seabank-otp').value, error: 'Enter a 6-digit OTP' }
+      ],
+      e
+    );
+  });
 
-                    if (cvv.length < 3 || !/^\d+$/.test(cvv)) {
-                        alert('Please enter a valid CVV');
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (cardName.trim() === '') {
-                        alert('Please enter the name on your card');
-                        e.preventDefault();
-                        return;
-                    }
-                });
-            }
-
-            // Form validation for SeaBank
-            const seabankForm = document.getElementById('seabank-form');
-            if (seabankForm) {
-                seabankForm.addEventListener('submit', function(e) {
-                    const accountNumber = document.getElementById('seabank-account').value;
-                    const mobileNumber = document.getElementById('seabank-mobile').value;
-                    const otp = document.getElementById('seabank-otp').value;
-
-                    if (accountNumber.length !== 10 || !/^\d+$/.test(accountNumber)) {
-                        alert('Please enter a valid 10-digit SeaBank account number');
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (mobileNumber.length !== 11 || !/^\d+$/.test(mobileNumber)) {
-                        alert('Please enter a valid 11-digit mobile number');
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (otp.length !== 6 || !/^\d+$/.test(otp)) {
-                        alert('Please enter a valid 6-digit OTP');
-                        e.preventDefault();
-                        return;
-                    }
-                });
-            }
-
-            // Form validation for GCash
-            const gcashForm = document.getElementById('gcash-form');
-            if (gcashForm) {
-                gcashForm.addEventListener('submit', function(e) {
-                    const mobileNumber = document.getElementById('gcash-mobile').value;
-                    const otp = document.getElementById('gcash-otp').value;
-                    const pin = document.getElementById('gcash-pin').value;
-
-                    if (mobileNumber.length !== 11 || !/^\d+$/.test(mobileNumber)) {
-                        alert('Please enter a valid 11-digit mobile number');
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (otp.length !== 6 || !/^\d+$/.test(otp)) {
-                        alert('Please enter a valid 6-digit OTP');
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (pin.length !== 4 || !/^\d+$/.test(pin)) {
-                        alert('Please enter a valid 4-digit GCash MPIN');
-                        e.preventDefault();
-                        return;
-                    }
-                });
-            }
-        });
+  document.getElementById('gcash-form')?.addEventListener('submit', e => {
+    validateForm(
+      [isValid.mobile, isValid.otp, isValid.mpin],
+      [
+        { value: document.getElementById('gcash-mobile').value, error: 'Enter an 11-digit mobile number' },
+        { value: document.getElementById('gcash-otp').value, error: 'Enter a 6-digit OTP' },
+        { value: document.getElementById('gcash-pin').value, error: 'Enter a 4-digit MPIN' }
+      ],
+      e
+    );
+  });
+});

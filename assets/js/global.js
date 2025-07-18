@@ -46,11 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(() => openModal());
   });
 
-  // ========== ADD TO CART FORMS ==========
+  // ========== ADD TO CART ==========
   document.querySelectorAll(".add-to-cart-form").forEach((form) => {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-
       const productId = form.getAttribute("data-product-id");
       const sizeId = form.getAttribute("data-size-id");
       const quantity = 1;
@@ -79,11 +78,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // ========== INITIALIZE CART COUNT BADGE ==========
+  // ========== INIT CART COUNT ==========
   updateCartCountBadge();
+
+  const registerForm = document.getElementById("registerForm");
+
+  registerForm?.addEventListener("submit", function (e) {
+    const phoneInput = document.getElementById("registerPhone");
+    const phone = phoneInput.value.trim();
+
+    if (!/^\d{11}$/.test(phone)) {
+      e.preventDefault();
+      const errorDiv = document.getElementById("registerError");
+      errorDiv.textContent = "⚠️ Phone number must be exactly 11 digits.";
+      phoneInput.classList.add("input-error");
+    }
+  });
 });
 
-// ========== CART COUNT BADGE ==========
+// ========== GLOBAL FUNCTIONS ==========
 function updateCartCountBadge() {
   fetch("actions/get_cart_count.php")
     .then((res) => res.json())
@@ -99,7 +112,6 @@ function updateCartCountBadge() {
     });
 }
 
-// ========== MODAL OPEN/CLOSE ==========
 function openModal() {
   const modalOverlay = document.querySelector(".modal-overlay");
   const modal = modalOverlay.querySelector(".modal");

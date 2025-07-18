@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // ==============================
+  // Promo Code Setup
+  // ==============================
   const promoInput = document.getElementById("promoCodeInput");
   const applyPromoBtn = document.getElementById("applyPromoBtn");
   const promoMessage = document.getElementById("promoMessage");
@@ -7,15 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const discountAmount = document.querySelector(".discount-amount");
   const removePromoBtn = document.querySelector(".promo-discount-remove");
 
-  let activePromo = null;
   const validPromoCodes = {
     VENUSIA20: { discount: 0.2, type: "percent" },
     FREESHIP: { discount: 10, type: "fixed-shipping" },
     SUMMER15: { discount: 0.15, type: "percent" },
   };
 
-  // Quantity selector functionality
-  document.querySelectorAll(".quantity-selector").forEach((section) => {
+  let activePromo = null;
+
+  // ==============================
+  // Quantity Controls
+  // ==============================
+  document.querySelectorAll(".quantity-selector").forEach(section => {
     const input = section.querySelector(".quantity-input");
     const minus = section.querySelector(".minus");
     const plus = section.querySelector(".plus");
@@ -24,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateQuantity(newQty) {
       if (newQty < 1) return;
-
       input.value = newQty;
 
       fetch("actions/update_cart.php", {
@@ -32,12 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `cart_item_id=${cartItemId}&quantity=${newQty}`,
       })
-        .then((res) => res.text())
-        .then((res) => {
+        .then(res => res.text())
+        .then(res => {
           if (res.trim() !== "updated") {
             alert("❌ Failed to update quantity.");
           } else {
             updateCartTotals();
+            updateCartCountBadge()
           }
         });
     }
@@ -59,8 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Remove item functionality
-  document.querySelectorAll(".remove-item").forEach((button) => {
+  // ==============================
+  // Remove Item
+  // ==============================
+  document.querySelectorAll(".remove-item").forEach(button => {
     button.addEventListener("click", function () {
       const cartItem = this.closest(".cart-item");
       const cartItemId = cartItem.dataset.cartItemId;
@@ -70,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `cart_item_id=${cartItemId}`,
       })
-        .then((res) => res.text())
-        .then((response) => {
+        .then(res => res.text())
+        .then(response => {
           if (response === "removed") {
             cartItem.remove();
             updateCartTotals();
@@ -84,17 +92,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Handle checkbox toggles
-  document.querySelectorAll(".item-checkbox").forEach((checkbox) => {
-    checkbox.addEventListener("change", updateCartTotals);
-  });
-
+  // ==============================
   // Promo Code Logic
+  // ==============================
   applyPromoBtn.addEventListener("click", applyPromoCode);
   promoInput.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      applyPromoCode();
-    }
+    if (e.key === "Enter") applyPromoCode();
   });
   removePromoBtn.addEventListener("click", removePromoCode);
 
@@ -114,10 +117,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    if (validPromoCodes[code]) {
-      activePromo = validPromoCodes[code];
-      activePromo.code = code;
-
+    const promo = validPromoCodes[code];
+    if (promo) {
+      activePromo = { ...promo, code };
       promoMessage.textContent = "Promo code applied!";
       promoMessage.classList.add("promo-success");
 
@@ -139,12 +141,16 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartTotals();
   }
 
+  // ==============================
+  // Update Cart Totals
+  // ==============================
   function updateCartTotals() {
     let subtotal = 0;
     let selectedCount = 0;
     let discount = 0;
+    let shipping = 0;
 
-    document.querySelectorAll(".cart-item").forEach((item) => {
+    document.querySelectorAll(".cart-item").forEach(item => {
       const checkbox = item.querySelector(".item-checkbox");
       const quantity = parseInt(item.querySelector(".quantity-input").value);
       const priceText = item.querySelector(".item-price").textContent;
@@ -162,12 +168,10 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (activePromo.type === "fixed-shipping") {
         shipping = -activePromo.discount;
       }
-
       discountAmount.textContent = `-₱${discount.toFixed(2)}`;
     }
 
     const tax = (subtotal - discount) * 0.09;
-    let shipping = 0;
     const total = subtotal + tax + shipping - discount;
 
     document.getElementById("selected-count").textContent = selectedCount;
@@ -193,123 +197,90 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Initial totals
-  updateCartTotals();
-
-  // Customization modal functionality
+  // ==============================
+  // Modal Customization (Size/Color)
+  // ==============================
   const modal = document.getElementById("customizationModal");
-  const customizeButtons = document.querySelectorAll(
-    ".change-size, .change-color"
-  );
   const closeModal = document.querySelector(".close-cart-modal");
   const cancelBtn = document.querySelector(".cart-cancel-btn");
   let currentItem = null;
   let currentOption = null;
-  let currentItemIndex = null;
 
-  customizeButtons.forEach((button) => {
+  document.querySelectorAll(".change-size, .change-color").forEach(button => {
     button.addEventListener("click", function () {
       currentItem = this.closest(".cart-item");
       currentOption = this.classList.contains("change-size") ? "size" : "color";
-      currentItemIndex = Array.from(
-        document.querySelectorAll(".cart-item")
-      ).indexOf(currentItem);
 
-      // Set current selections in modal
-      const currentValue = currentItem.querySelector(
-        `.current-${currentOption}`
-      ).textContent;
-      const optionValues = document.querySelectorAll(
-        `#${currentOption}Options .option-value`
-      );
+      const currentValue = currentItem.querySelector(`.current-${currentOption}`).textContent;
+      const options = document.querySelectorAll(`#${currentOption}Options .option-value`);
 
-      optionValues.forEach((option) => {
-        option.classList.remove("selected");
-        if (option.dataset.value === currentValue) {
-          option.classList.add("selected");
-        }
+      options.forEach(option => {
+        option.classList.toggle("selected", option.dataset.value === currentValue);
       });
 
-      // Update modal title
-      document.querySelector(".cart-modal-title").textContent = `Change ${
-        currentOption.charAt(0).toUpperCase() + currentOption.slice(1)
-      }`;
-
-      // Show modal
+      document.querySelector(".cart-modal-title").textContent = `Change ${capitalize(currentOption)}`;
       modal.style.display = "flex";
     });
   });
 
-  // Option selection in modal
-  document.querySelectorAll(".option-value").forEach((option) => {
+  document.querySelectorAll(".option-value").forEach(option => {
     option.addEventListener("click", function () {
-      this.parentElement.querySelectorAll(".option-value").forEach((opt) => {
-        opt.classList.remove("selected");
-      });
+      this.parentElement.querySelectorAll(".option-value").forEach(opt => opt.classList.remove("selected"));
       this.classList.add("selected");
     });
   });
 
-  // Close modal
-  function closeModalFunc() {
-    modal.style.display = "none";
-  }
+  document.querySelector(".cart-save-btn").addEventListener("click", function () {
+    if (currentItem && currentOption === "size") {
+      const selectedOption = document.querySelector("#sizeOptions .option-value.selected");
+      if (!selectedOption) return closeModalFunc();
+
+      const newSizeLabel = selectedOption.dataset.value;
+      const newSizeId = selectedOption.dataset.id;
+      const cartItemId = currentItem.dataset.cartItemId;
+
+      fetch("actions/update_cart_size.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `cart_item_id=${cartItemId}&size_id=${newSizeId}`,
+      })
+        .then(res => res.text())
+        .then(response => {
+          if (response === "updated") {
+            currentItem.querySelector(".current-size").textContent = newSizeLabel;
+            currentItem.querySelector(".current-size").dataset.sizeId = newSizeId;
+            closeModalFunc();
+          } else {
+            alert("❌ Failed to update size.");
+          }
+        });
+    } else {
+      closeModalFunc();
+    }
+  });
 
   closeModal.addEventListener("click", closeModalFunc);
   cancelBtn.addEventListener("click", closeModalFunc);
 
-  // Save changes
-  document
-    .querySelector(".cart-save-btn")
-    .addEventListener("click", function () {
-      if (
-        currentItem &&
-        currentOption === "size" &&
-        currentItemIndex !== null
-      ) {
-        const selectedOption = document.querySelector(
-          "#sizeOptions .option-value.selected"
-        );
-
-        if (selectedOption) {
-          const newSizeLabel = selectedOption.dataset.value;
-          const newSizeId = selectedOption.dataset.id;
-          const cartItemId = currentItem.dataset.cartItemId;
-
-          console.log("Saving size change...");
-          console.log("Cart Item ID:", cartItemId);
-          console.log("New Size ID:", newSizeId);
-          console.log("New Size Label:", newSizeLabel);
-
-          fetch("actions/update_cart_size.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `cart_item_id=${cartItemId}&size_id=${newSizeId}`,
-          })
-            .then((res) => res.text())
-            .then((response) => {
-              console.log("Server response:", response);
-
-              if (response === "updated") {
-                currentItem.querySelector(".current-size").textContent =
-                  newSizeLabel;
-                currentItem.querySelector(".current-size").dataset.sizeId =
-                  newSizeId;
-                closeModalFunc();
-              } else {
-                alert("❌ Failed to update size.");
-              }
-            });
-        }
-      } else {
-        closeModalFunc(); // If not "size", fallback
-      }
-    });
-
-  // Close modal when clicking outside
-  window.addEventListener("click", function (event) {
-    if (event.target === modal) {
-      closeModalFunc();
-    }
+  window.addEventListener("click", function (e) {
+    if (e.target === modal) closeModalFunc();
   });
+
+  function closeModalFunc() {
+    modal.style.display = "none";
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // ==============================
+  // Checkbox Watchers
+  // ==============================
+  document.querySelectorAll(".item-checkbox").forEach(checkbox => {
+    checkbox.addEventListener("change", updateCartTotals);
+  });
+
+  // Init
+  updateCartTotals();
 });

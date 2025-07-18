@@ -628,11 +628,11 @@ footer {
 
 .close-btn {
     position: fixed;
-    top: 25px;
-    right: 30px;
+    top: 10px;
+    right: 20px;
     background: none;
     border: none;
-    font-size: 44px;
+    font-size: 2rem;
     color: var(--primary-taupe);
     cursor: pointer;
     padding: 5px;

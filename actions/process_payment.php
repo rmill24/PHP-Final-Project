@@ -82,7 +82,7 @@ try {
         ");
         if (!$stmt->execute([
             $orderId,
-            $item['id'],
+            $item['product_id'],
             $item['size_id'],
             $item['quantity'],
             $item['price']

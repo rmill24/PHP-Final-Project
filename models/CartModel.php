@@ -13,7 +13,7 @@ class CartModel
     public function getCart()
     {
         $stmt = $this->db->prepare("
-        SELECT ci.id AS cart_item_id, p.*, ci.size_id, ci.quantity, ci.selected, s.label AS size_label
+        SELECT ci.id AS cart_item_id, p.*, p.id AS product_id, ci.size_id, ci.quantity, ci.selected, s.label AS size_label
         FROM cart c
         JOIN cart_item ci ON ci.cart_id = c.id
         JOIN products p ON p.id = ci.product_id
@@ -27,7 +27,7 @@ class CartModel
     public function getSelectedCartItems()
     {
         $stmt = $this->db->prepare("
-        SELECT ci.id AS cart_item_id, p.*, ci.size_id, ci.quantity, s.label AS size_label
+        SELECT ci.id AS cart_item_id, p.*, p.id AS product_id, ci.size_id, ci.quantity, s.label AS size_label
         FROM cart c
         JOIN cart_item ci ON ci.cart_id = c.id
         JOIN products p ON p.id = ci.product_id

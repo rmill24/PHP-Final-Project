@@ -163,7 +163,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <input type="email" id="email" name="email" required>
                 </div>
             </div>
-            <div id="formErrors" style="color: var(--secondary-dark); font-weight: bold"></div>
+            <div id="formErrors"></div>
             <button type="submit" class="register-btn">Register</button>
         </form>
     </div>

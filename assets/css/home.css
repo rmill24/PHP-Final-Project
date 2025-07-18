@@ -1,3 +1,7 @@
+:root {
+    --error: #c23b3b;
+}
+
 /* Carousel Container */
 .carousel-container {
   max-width: 1700px;
@@ -605,6 +609,12 @@
 
 .register-btn:active {
   transform: translateY(0);
+}
+
+#formErrors {
+  color: white;
+  font-weight: bold;
+  text-align: left;
 }
 
 /* Responsive Design */

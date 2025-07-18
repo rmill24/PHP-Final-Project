@@ -81,14 +81,14 @@
     <!-- Modal -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-header">
                 <div class="modal-title-container">
-                    <h2 class="modal-title">Welcome back</h2>
+                    <h2 class="modal-title">Welcome Back</h2>
                     <p class="modal-subtitle">Sign in to your account</p>
                 </div>
             </div>
-            <form onsubmit="handleLogin(event)">
+            <form onsubmit="handleLogin(event)" id="login-modal-form">
                 <div class="form-group">
                     <input type="email" name="email" id="loginEmail" placeholder="Email" class="form-input" required />
                 </div>
@@ -100,7 +100,7 @@
             </form>
             <p class="sign-up-text">
                 Don't have an account yet?
-                <a href="#register" class="sign-up-link" onclick="closeModal()">Sign up here</a>
+                <a href="index.php?page=home#register" class="sign-up-link" onclick="closeModal()">Sign up here</a>
             </p>
         </div>
     </div>

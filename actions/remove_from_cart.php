@@ -8,7 +8,7 @@ $cartItemId = $_POST['cart_item_id'] ?? null;
 
 if (!$cartItemId) {
     http_response_code(400);
-    echo "Invalid item";
+    header("Location: ../index.php?page=error");
     exit;
 }
 

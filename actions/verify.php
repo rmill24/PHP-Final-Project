@@ -11,5 +11,5 @@ if ($userId && $token && $userModel->verifyUser($userId, $token)) {
     header('Location: ../index.php?page=verified');
     exit;
 } else {
-    echo "❌ Invalid or expired verification link.";
+    echo "Invalid or expired verification link.";
 }

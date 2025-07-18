@@ -13,7 +13,6 @@ $env = require __DIR__ . '/../.env.php';
 // }
 
 // FOR LOCAL TESTING
-$env = require __DIR__ . '/../.env.php';
 
 try {
     $db = new PDO(

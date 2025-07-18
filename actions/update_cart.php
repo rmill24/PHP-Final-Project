@@ -9,7 +9,7 @@ $quantity = $_POST['quantity'] ?? null;
 
 if (!$cartItemId || !$quantity || $quantity < 1) {
     http_response_code(400);
-    echo 'invalid';
+    header("Location: ../index.php?page=error");
     exit;
 }
 

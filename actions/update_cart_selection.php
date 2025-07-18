@@ -10,7 +10,7 @@ $selected = isset($_POST['selected']) ? (bool)$_POST['selected'] : false;
 if (!$cartItemId) {
     error_log("Missing cart_item_id");
     http_response_code(400);
-    echo "Invalid request.";
+    header("Location: ../index.php?page=error");
     exit;
 }
 

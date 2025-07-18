@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if (!isset($_GET['order_id']) || !is_numeric($_GET['order_id'])) {
-    echo "Invalid order.";
+    header("Location: ../index.php?page=error");
     exit;
 }
 
@@ -24,7 +24,7 @@ $userModel = new UserModel($db);
 $order = $userModel->getOrderByIdAndUser($orderId, $userId);
 
 if (!$order) {
-    echo "Order not found or access denied.";
+    header("Location: ../index.php?page=error");
     exit;
 }
 

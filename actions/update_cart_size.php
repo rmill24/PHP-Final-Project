@@ -10,7 +10,7 @@ $newSizeId = $_POST['size_id'] ?? null;
 
 if (!$cartItemId || !$newSizeId) {
     http_response_code(400);
-    echo 'invalid';
+    header("Location: ../index.php?page=error");
     exit;
 }
 

@@ -18,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Check if the email exists but is unverified
         $unverifiedCheck = $userModel->getByEmail($email);
         if ($unverifiedCheck && !$unverifiedCheck['email_verified']) {
-            echo "unverified";
             header("Location: ../index.php?page=unverified");
             exit;
         } else {

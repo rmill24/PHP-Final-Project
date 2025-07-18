@@ -7,12 +7,14 @@ $productId = $_GET['product_id'] ?? null;
 
 if (!$productId) {
     echo "<p>Product not found.</p>";
+    header("Location: ../index.php?page=error");
     exit;
 }
 
 $product = $productModel->getById($productId);
 if (!$product) {
     echo "<p>Product not found.</p>";
+    header("Location: ../index.php?page=error");
     exit;
 }
 

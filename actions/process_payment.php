@@ -18,10 +18,10 @@ $userId = $_SESSION['user_id'];
 $cartModel = new CartModel($db, $userId);
 $cartItems = $cartModel->getSelectedCartItems();
 
-if (empty($cartItems)) {
-    echo "No items selected for checkout.";
-    exit;
-}
+// if (empty($cartItems)) {
+//     echo "No items selected for checkout.";
+//     exit;
+// }
 
 // Calculate subtotal from cart items (price * quantity)
 $subtotal = 0;
@@ -108,8 +108,8 @@ try {
     // Redirect to success page
     header("Location: ../index.php?page=order_success");
     exit;
-
 } catch (Exception $e) {
     $db->rollBack();
-    echo "❌ Error processing order: " . $e->getMessage();
+    header("Location: ../index.php?page=error");
+    exit;
 }

@@ -32,7 +32,7 @@ foreach ($cartItems as $item) {
 // Convert POST strings to floats and sanitize inputs
 $discountAmount = isset($_POST['discount']) ? floatval($_POST['discount']) : 0;
 $discountCode = isset($_POST['discount_code']) ? trim($_POST['discount_code']) : '';
-$shipping = 0; // Update if you have shipping input
+$shipping = 0;
 $tax = isset($_POST['tax']) ? floatval($_POST['tax']) : 0;
 
 // Calculate total server-side

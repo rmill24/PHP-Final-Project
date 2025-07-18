@@ -1,7 +1,7 @@
 <div class="main-container">
   <!-- About Header -->
   <section class="about-header">
-    <div class="about-header-content fade-in">
+    <div class="about-header-content">
       <h1>Elegance Woven into Every Thread</h1>
       <p>
         Discover the story behind Venusia, where timeless design meets modern femininity and every stitch tells a story of craftsmanship.
@@ -144,9 +144,9 @@
             <img src="assets/img/racelle-pic.jpg" alt="Racelle H. Millagracia" />
           </div>
           <h4>Racelle H. Millagracia</h4>
-          <span>Backend Developer</span>
+          <span>Full Stack Developer</span>
           <p>
-            Racelle builds and maintains the robust systems that power Venusia's e-commerce platform and customer databases.
+            Racelle handles the robust systems that power Venusia's e-commerce platform and customer databases while making things look good.
           </p>
           <div class="social-links">
             <a href="#"><i class="fab fa-linkedin-in" aria-label="LinkedIn Profile"></i></a>
@@ -161,9 +161,9 @@
             <img src="assets/img/ash-pic.png" alt="Janna Ashley H. Quiban" />
           </div>
           <h4>Janna Ashley H. Quiban</h4>
-          <span>Backend Developer</span>
+          <span>Researcher & Frontend Developer</span>
           <p>
-            Ashley develops the server-side logic and database architecture that ensures Venusia's digital operations run smoothly.
+            Ashley brings the Venusia brand to life online by conducting user experience research and developing engaging, functional interfaces.
           </p>
           <div class="social-links">
             <a href="#"><i class="fab fa-linkedin-in" aria-label="LinkedIn Profile"></i></a>
@@ -187,7 +187,7 @@
     <section class="stats-section">
       <div class="stats-container">
         <div class="stat-item">
-          <div class="stat-number" data-target="2025">2025</div>
+          <div class="stat-number" data-target="2023">2023</div>
           <div class="stat-label">Founded</div>
         </div>
         <div class="stat-item">

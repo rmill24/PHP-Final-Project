@@ -1,4 +1,106 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // ========== PAGE LOAD ANIMATION ==========
+  const pageLoader = document.getElementById('pageLoader');
+  const body = document.body;
+  
+  // Check if this is a fresh visit (tab was closed and reopened)
+  const hasVisited = sessionStorage.getItem('venusia_visited');
+  
+  if (!hasVisited) {
+    // First visit or tab was reopened - show loading animation
+    body.classList.add('loading');
+    
+    // Simulate loading time and hide the loader
+    setTimeout(() => {
+      pageLoader.classList.add('fade-out');
+      body.classList.remove('loading');
+      body.classList.add('loaded');
+      
+      // Mark as visited for this session
+      sessionStorage.setItem('venusia_visited', 'true');
+      
+      // Remove loader from DOM after animation completes
+      setTimeout(() => {
+        pageLoader.remove();
+        // Trigger page content animation after loader is removed
+        initPageTransitions();
+      }, 800);
+    }, 3000); // 3 second loading time
+  } else {
+    // Already visited in this session - hide loader immediately
+    pageLoader.remove();
+    body.classList.add('loaded');
+    // Trigger page content animation immediately
+    initPageTransitions();
+  }
+
+  // ========== PAGE TRANSITIONS ==========
+  function initPageTransitions() {
+    // Animate main page content
+    const pageContent = document.querySelector('.page-content');
+    if (pageContent) {
+      setTimeout(() => {
+        pageContent.classList.add('fade-in');
+      }, 100);
+    }
+
+    // Animate individual page elements with staggered delays
+    const elementsToAnimate = document.querySelectorAll('.carousel-container, .category-layout, .featured, .about-header-content, .container, .cart-content, .product-container, .registration-section');
+    
+    elementsToAnimate.forEach((element, index) => {
+      element.classList.add('page-element');
+      setTimeout(() => {
+        element.classList.add('animate');
+      }, 200 + (index * 100)); // Staggered animation with 100ms delay between elements
+    });
+
+    // Animate cards and items that appear in grids
+    const cardElements = document.querySelectorAll('.product-card, .cart-item, .member, .story-highlight, .value-card');
+    cardElements.forEach((element, index) => {
+      element.classList.add('page-element');
+      setTimeout(() => {
+        element.classList.add('animate');
+      }, 400 + (index * 50)); // Faster staggered animation for smaller elements
+    });
+  }
+
+  // ========== NAVIGATION LINK ANIMATIONS ==========
+  // Add smooth transitions when clicking navigation links
+  const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav-links a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Only apply transition effect for same-origin links
+      if (this.hostname === window.location.hostname) {
+        const pageContent = document.querySelector('.page-content');
+        if (pageContent) {
+          pageContent.classList.remove('fade-in');
+          // Small delay to allow fade-out effect to be visible
+          setTimeout(() => {
+            window.location.href = this.href;
+          }, 150);
+          e.preventDefault();
+        }
+      }
+    });
+  });
+
+  // ========== STICKY HEADER SCROLL EFFECT ==========
+  const header = document.querySelector('header');
+  let lastScrollTop = 0;
+
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Add/remove scrolled class based on scroll position
+    if (scrollTop > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    lastScrollTop = scrollTop;
+  });
+
   // ========== MOBILE MENU ==========
   const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
   const closeMenuBtn = document.querySelector(".close-menu-btn");

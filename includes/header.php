@@ -15,6 +15,21 @@
 
 <body>
 
+    <!-- Page Load Animation -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="assets/img/venusia_logo.png" alt="Venusia Logo">
+                <span class="loader-brand-text">VENUSIA</span>
+            </div>
+            <p class="loader-tagline">Luxury redefined for the modern woman</p>
+            <div class="loader-spinner"></div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="main-header">
         <header>
             <div class="nav-container">

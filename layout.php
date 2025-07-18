@@ -1,6 +1,6 @@
 <?php include 'includes/header.php'; ?>
 
-<main>
+<main class="page-content">
   <?= $page_content ?>
 </main>
 

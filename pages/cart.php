@@ -32,43 +32,45 @@ if (isset($_SESSION['user_id'])) {
             <?php else: ?>
                 <?php foreach ($cartItems as $item): ?>
                     <article class="cart-item" data-cart-item-id="<?= $item['cart_item_id'] ?>">
-                        <div class="item-selector">
-                            <input type="checkbox" class="item-checkbox" <?= $item['selected'] ? 'checked' : '' ?>>
-                        </div>
-                        <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
-                        <div class="item-details">
-                            <div class="item-header">
-                                <h3>
-                                    <a href="index.php?page=product&product_id=<?= $item['product_id'] ?>">
-                                        <?= htmlspecialchars($item['name']) ?>
-                                    </a>
-                                </h3>
-                                <div class="item-meta">
-                                    <span>Size:
-                                        <span class="current-size" data-size-id="<?= $item['size_id'] ?>">
-                                            <?= htmlspecialchars($item['size_label']) ?>
+                        <div class="item-details-container">
+                            <div class="item-selector">
+                                <input type="checkbox" class="item-checkbox" <?= $item['selected'] ? 'checked' : '' ?>>
+                            </div>
+                            <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
+                            <div class="item-details">
+                                <div class="item-header">
+                                    <h3>
+                                        <a href="index.php?page=product&product_id=<?= $item['product_id'] ?>">
+                                            <?= htmlspecialchars($item['name']) ?>
+                                        </a>
+                                    </h3>
+                                    <div class="item-meta">
+                                        <span>Size:
+                                            <span class="current-size" data-size-id="<?= $item['size_id'] ?>">
+                                                <?= htmlspecialchars($item['size_label']) ?>
+                                            </span>
                                         </span>
-                                    </span>
-                                    <!-- static color placeholder -->
-                                    <span>Color: <span class="current-color">Default</span></span>
+                                        <!-- static color placeholder -->
+                                        <span>Color: <span class="current-color">Default</span></span>
+                                    </div>
+                                    <div>
+                                        <span class="customize-option change-size">Change Size</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="customize-option change-size">Change Size</span>
+                                <div class="item-price">
+                                    ₱<?= number_format($item['price'], 2) ?>
+                                </div>
+                                <div class="item-actions">
+                                    <div class="quantity-selector">
+                                        <button class="quantity-btn minus">-</button>
+                                        <input type="number" value="<?= $item['quantity'] ?>" class="quantity-input" min="1">
+                                        <button class="quantity-btn plus">+</button>
+                                    </div>
+                                    <button class="remove-item">
+                                        <i class="far fa-trash-alt"></i> Remove
+                                    </button>
                                 </div>
                             </div>
-                            <div class="item-actions">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn minus">-</button>
-                                    <input type="number" value="<?= $item['quantity'] ?>" class="quantity-input" min="1">
-                                    <button class="quantity-btn plus">+</button>
-                                </div>
-                                <button class="remove-item">
-                                    <i class="far fa-trash-alt"></i> Remove
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-price">
-                            ₱<?= number_format($item['price'], 2) ?>
                         </div>
                     </article>
                 <?php endforeach; ?>

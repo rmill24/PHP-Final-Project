@@ -19,7 +19,8 @@ $user = $userModel->getById($_SESSION['user_id']);
 $orders = $userModel->getRecentOrdersWithItems($_SESSION['user_id']);
 
 if (!$user) {
-    echo "User not found.";
+    session_destroy(); // clean up invalid session
+    header('Location: index.php?page=home');
     exit;
 }
 ?>

@@ -12,11 +12,11 @@ $products = $productModel->getAll($category);
     <div class="store-nav">
         <h1>Venusia Collection</h1>
         <nav>
-            <a href="?page=store">All Items</a>
-            <a href="?page=store&category=Tops">Tops</a>
-            <a href="?page=store&category=Bottoms">Bottoms</a>
-            <a href="?page=store&category=Dresses">Dresses</a>
-            <a href="?page=store&category=Outerwear">Outerwear</a>
+            <a href="?page=store" class="<?= !$category ? 'active' : '' ?>">All Items</a>
+            <a href="?page=store&category=Tops" class="<?= $category === 'Tops' ? 'active' : '' ?>">Tops</a>
+            <a href="?page=store&category=Bottoms" class="<?= $category === 'Bottoms' ? 'active' : '' ?>">Bottoms</a>
+            <a href="?page=store&category=Dresses" class="<?= $category === 'Dresses' ? 'active' : '' ?>">Dresses</a>
+            <a href="?page=store&category=Outerwear" class="<?= $category === 'Outerwear' ? 'active' : '' ?>">Outerwear</a>
         </nav>
     </div>
 

@@ -5,12 +5,6 @@ $stmt = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 4");
 $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<?php if (isset($_GET['registered'])): ?>
-    <div class="alert alert-success" style="text-align: center; padding: 1rem; background-color: #d4edda; color: #155724; border-radius: 5px; margin: 20px auto; max-width: 600px;">
-        ✅ Thank you for registering! Please check your email to verify your account.
-    </div>
-<?php endif; ?>
-
 <div class="carousel-container">
     <!-- Bootstrap Carousel -->
     <div id="carouselVenusia" class="carousel slide" data-bs-ride="carousel">

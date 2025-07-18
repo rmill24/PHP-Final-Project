@@ -20,5 +20,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to homepage or login
-header("Location: /PHP-Final-Project/index.php?page=home");
+header("Location: ../index.php?page=home");
 exit;

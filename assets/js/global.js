@@ -91,7 +91,7 @@ function updateCartCountBadge() {
       const cartCount = document.getElementById("cartCount");
       if (cartCount) {
         cartCount.textContent = data.count;
-        cartCount.style.display = data.count > 0 ? "inline-block" : "none";
+        cartCount.style.display = data.count;
       }
     })
     .catch((err) => {

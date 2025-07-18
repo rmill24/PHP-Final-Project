@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 
     if ($cartId) {
         $stmt = $db->prepare("
-            SELECT ci.id AS cart_item_id, ci.product_id, ci.size_id, ci.quantity, p.name, p.price, p.image_url, s.label AS size
+            SELECT ci.id AS cart_item_id, ci.product_id, ci.size_id, ci.quantity, ci.selected, p.name, p.price, p.image_url, s.label AS size
             FROM cart_item ci
             JOIN products p ON ci.product_id = p.id
             JOIN sizes s ON ci.size_id = s.id
@@ -49,7 +49,7 @@ if (isset($_SESSION['user_id'])) {
                 <?php foreach ($cartItems as $item): ?>
                     <article class="cart-item" data-cart-item-id="<?= $item['cart_item_id'] ?>">
                         <div class="item-selector">
-                            <input type="checkbox" class="item-checkbox" checked>
+                            <input type="checkbox" class="item-checkbox" <?= $item['selected'] ? 'checked' : '' ?>>
                         </div>
                         <div class="item-image" style="background-image: url('<?= htmlspecialchars($item['image_url']) ?>');"></div>
                         <div class="item-details">

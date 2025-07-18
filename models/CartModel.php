@@ -13,12 +13,26 @@ class CartModel
     public function getCart()
     {
         $stmt = $this->db->prepare("
-        SELECT ci.id AS cart_item_id, p.*, ci.size_id, ci.quantity, s.label AS size_label
+        SELECT ci.id AS cart_item_id, p.*, ci.size_id, ci.quantity, ci.selected, s.label AS size_label
         FROM cart c
         JOIN cart_item ci ON ci.cart_id = c.id
         JOIN products p ON p.id = ci.product_id
         JOIN sizes s ON s.id = ci.size_id
         WHERE c.user_id = ?
+    ");
+        $stmt->execute([$this->userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSelectedCartItems()
+    {
+        $stmt = $this->db->prepare("
+        SELECT ci.id AS cart_item_id, p.*, ci.size_id, ci.quantity, s.label AS size_label
+        FROM cart c
+        JOIN cart_item ci ON ci.cart_id = c.id
+        JOIN products p ON p.id = ci.product_id
+        JOIN sizes s ON s.id = ci.size_id
+        WHERE c.user_id = ? AND ci.selected = 1
     ");
         $stmt->execute([$this->userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -120,5 +134,15 @@ class CartModel
             $stmt->execute([$newSizeId, $cartItemId, $this->userId]);
             return $stmt->rowCount() > 0;
         }
+    }
+
+    public function updateItemSelection($cartItemId, $selected)
+    {
+        $stmt = $this->db->prepare("
+            UPDATE cart_item
+            SET selected = ?
+            WHERE id = ? AND cart_id IN (SELECT id FROM cart WHERE user_id = ?)
+        ");
+        return $stmt->execute([$selected ? 1 : 0, $cartItemId, $this->userId]);
     }
 }

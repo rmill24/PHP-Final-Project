@@ -16,10 +16,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 $cartModel = new CartModel($db, $userId);
-$cartItems = $cartModel->getCart();
+$cartItems = $cartModel->getSelectedCartItems();
 
 if (empty($cartItems)) {
-    echo "Cart is empty.";
+    echo "No items selected for checkout.";
     exit;
 }
 
@@ -92,9 +92,11 @@ try {
         }
     }
 
-    // Clear the user's cart
+    // Clear only the selected items from the user's cart
     $stmt = $db->prepare("
-        DELETE FROM cart_item WHERE cart_id IN (SELECT id FROM cart WHERE user_id = ?)
+        DELETE FROM cart_item 
+        WHERE cart_id IN (SELECT id FROM cart WHERE user_id = ?) 
+        AND selected = 1
     ");
     if (!$stmt->execute([$userId])) {
         $errorInfo = $stmt->errorInfo();

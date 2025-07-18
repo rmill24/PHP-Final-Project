@@ -11,10 +11,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $cartModel = new CartModel($db, $_SESSION['user_id']);
-$cartItems = $cartModel->getCart();
+$cartItems = $cartModel->getSelectedCartItems();
 
 if (empty($cartItems)) {
-    echo "<p>Your cart is empty.</p>";
+    echo "<p>No items selected for checkout. <a href='index.php?page=cart'>Return to cart</a></p>";
     exit;
 }
 

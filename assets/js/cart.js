@@ -311,7 +311,33 @@ document.addEventListener("DOMContentLoaded", function () {
   // Checkbox Watchers
   // ==============================
   document.querySelectorAll(".item-checkbox").forEach((checkbox) => {
-    checkbox.addEventListener("change", updateCartTotals);
+    checkbox.addEventListener("change", function() {
+      const cartItem = this.closest(".cart-item");
+      const cartItemId = cartItem.dataset.cartItemId;
+      const selected = this.checked;
+
+      // Update database
+      fetch("actions/update_cart_selection.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `cart_item_id=${cartItemId}&selected=${selected ? 1 : 0}`,
+      })
+        .then((res) => res.text())
+        .then((response) => {
+          if (response === "updated") {
+            updateCartTotals();
+          } else {
+            // Revert checkbox state if update failed
+            this.checked = !selected;
+            alert("❌ Failed to update selection.");
+          }
+        })
+        .catch(() => {
+          // Revert checkbox state if request failed
+          this.checked = !selected;
+          alert("❌ Failed to update selection.");
+        });
+    });
   });
 
   // Init

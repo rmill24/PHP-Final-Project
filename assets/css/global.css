@@ -452,6 +452,17 @@ header.scrolled {
   }
 }
 
+@media (max-width: 425px){
+  .right-section i {
+    font-size: 1rem;
+  }
+
+  .cart-count-badge {
+    font-size: 0.75rem;
+    top: -5px;
+  }
+}
+
 /* Footer Styles */
 .footer-main-container {
   padding-left: 0;

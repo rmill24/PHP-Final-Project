@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Animate individual page elements with staggered delays
-    const elementsToAnimate = document.querySelectorAll('.carousel-container, .category-layout, .featured, .about-header-content, .container, .cart-content, .product-container, .registration-section');
+    const elementsToAnimate = document.querySelectorAll('.carousel-container, .category-layout, .featured, .about-header-content, .container, .cart-content, .product-container');
     
     elementsToAnimate.forEach((element, index) => {
       element.classList.add('page-element');

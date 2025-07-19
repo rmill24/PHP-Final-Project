@@ -11,6 +11,37 @@ use PHPMailer\PHPMailer\Exception;
 
 $env = require __DIR__ . '/../.env.php';
 
+function formatName($name) {
+    if (empty($name)) {
+        return '';
+    }
+    
+    // Trim whitespace and convert to lowercase first
+    $name = trim($name);
+    $name = strtolower($name);
+    
+    // Convert to title case
+    $name = ucwords($name);
+    
+    // Handle special cases with apostrophes (O'Connor, D'Angelo, etc.)
+    $name = preg_replace_callback("/(\w)'(\w)/", function($matches) {
+        return $matches[1] . "'" . ucfirst($matches[2]);
+    }, $name);
+    
+    // Handle special cases with hyphens (Mary-Jane, Jean-Claude, etc.)
+    $name = preg_replace_callback("/(\w)-(\w)/", function($matches) {
+        return $matches[1] . "-" . ucfirst($matches[2]);
+    }, $name);
+    
+    // Handle prefixes like "de", "van", "von", "del", etc. (keep them lowercase)
+    $prefixes = ['de', 'van', 'von', 'del', 'della', 'da', 'du', 'le', 'la'];
+    foreach ($prefixes as $prefix) {
+        $name = preg_replace("/\b" . ucfirst($prefix) . "\b/", $prefix, $name);
+    }
+    
+    return $name;
+}
+
 $userModel = new UserModel($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,9 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     $combinedAddress = implode(', ', array_filter($addressParts));
     
+    // Format names properly - convert to title case and handle special cases
+    $firstName = formatName($_POST['firstName']);
+    $lastName = formatName($_POST['lastName']);
+    
     $data = [
-        'first_name' => $_POST['firstName'],
-        'last_name'  => $_POST['lastName'],
+        'first_name' => $firstName,
+        'last_name'  => $lastName,
         'email'      => $_POST['email'],
         'phone'      => $phoneNumber,
         'address'    => $combinedAddress,
@@ -71,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = bin2hex(random_bytes(16));
     $userModel->saveVerificationToken($userId, $token);
 
-    // $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
+    $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
 
     // local testing
-    $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
+    // $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
 
     // Send email using PHPMailer
     $mail = new PHPMailer(true);

@@ -64,10 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userModel->resendVerificationToken($user['id'], $token);
     
     if ($result) {
-        // $verifyLink = "https://venusia.great-site.net/actions/verify.php?user={$user['id']}&token=$token";
+        $verifyLink = "https://venusia.great-site.net/actions/verify.php?user={$user['id']}&token=$token";
         
         // local testing
-        $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user={$user['id']}&token=$token";
+        // $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user={$user['id']}&token=$token";
         
         // Send email using PHPMailer
         $mail = new PHPMailer(true);

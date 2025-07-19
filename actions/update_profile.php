@@ -3,6 +3,42 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../models/UserModel.php';
 
+/**
+ * Format names properly - converts to title case and handles special cases
+ * @param string $name The name to format
+ * @return string The formatted name
+ */
+function formatName($name) {
+    if (empty($name)) {
+        return '';
+    }
+    
+    // Trim whitespace and convert to lowercase first
+    $name = trim($name);
+    $name = strtolower($name);
+    
+    // Convert to title case
+    $name = ucwords($name);
+    
+    // Handle special cases with apostrophes (O'Connor, D'Angelo, etc.)
+    $name = preg_replace_callback("/(\w)'(\w)/", function($matches) {
+        return $matches[1] . "'" . ucfirst($matches[2]);
+    }, $name);
+    
+    // Handle special cases with hyphens (Mary-Jane, Jean-Claude, etc.)
+    $name = preg_replace_callback("/(\w)-(\w)/", function($matches) {
+        return $matches[1] . "-" . ucfirst($matches[2]);
+    }, $name);
+    
+    // Handle prefixes like "de", "van", "von", "del", etc. (keep them lowercase)
+    $prefixes = ['de', 'van', 'von', 'del', 'della', 'da', 'du', 'le', 'la'];
+    foreach ($prefixes as $prefix) {
+        $name = preg_replace("/\b" . ucfirst($prefix) . "\b/", $prefix, $name);
+    }
+    
+    return $name;
+}
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
@@ -20,8 +56,8 @@ $userModel = new UserModel($db);
 $userId = $_SESSION['user_id'];
 
 // Validate and sanitize input data
-$firstName = trim($_POST['first_name'] ?? '');
-$lastName = trim($_POST['last_name'] ?? '');
+$firstName = formatName($_POST['first_name'] ?? '');
+$lastName = formatName($_POST['last_name'] ?? '');
 $phoneNumber = trim($_POST['phone_number'] ?? '');
 
 // Handle address fields
@@ -42,16 +78,16 @@ if (empty($firstName)) {
     $errors[] = 'First name is required';
 } elseif (strlen($firstName) < 2 || strlen($firstName) > 50) {
     $errors[] = 'First name must be between 2 and 50 characters';
-} elseif (!preg_match('/^[a-zA-Z\s]+$/', $firstName)) {
-    $errors[] = 'First name can only contain letters and spaces';
+} elseif (!preg_match('/^[a-zA-Z\s\'-]+$/', $firstName)) {
+    $errors[] = 'First name can only contain letters, spaces, apostrophes, and hyphens';
 }
 
 if (empty($lastName)) {
     $errors[] = 'Last name is required';
 } elseif (strlen($lastName) < 2 || strlen($lastName) > 50) {
     $errors[] = 'Last name must be between 2 and 50 characters';
-} elseif (!preg_match('/^[a-zA-Z\s]+$/', $lastName)) {
-    $errors[] = 'Last name can only contain letters and spaces';
+} elseif (!preg_match('/^[a-zA-Z\s\'-]+$/', $lastName)) {
+    $errors[] = 'Last name can only contain letters, spaces, apostrophes, and hyphens';
 }
 
 if (!empty($phoneNumber)) {

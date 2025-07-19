@@ -85,11 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const validators = [
         {
           test: /^[A-Za-z\s'-]+$/.test(getValue("firstName")),
-          message: "First name should only contain letters and spaces.",
+          message: "First name should only contain letters, spaces, apostrophes, and hyphens.",
         },
         {
           test: /^[A-Za-z\s'-]+$/.test(getValue("lastName")),
-          message: "Last name should only contain letters and spaces.",
+          message: "Last name should only contain letters, spaces, apostrophes, and hyphens.",
         },
         {
           test: (() => {
@@ -137,6 +137,11 @@ document.addEventListener("DOMContentLoaded", function () {
       validators.forEach((v) => {
         if (!v.test) errors.push(v.message);
       });
+
+      // Check if email is available before submitting
+      if (!isEmailAvailable) {
+        errors.push("Please use a different email address.");
+      }
 
       if (errors.length > 0) {
         e.preventDefault();

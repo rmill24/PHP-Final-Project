@@ -151,11 +151,6 @@ $total = $subtotal + $tax + $shipping - $discount;
                         <input type="text" id="gcash-otp" name="gcash_otp" placeholder="Enter 6-digit OTP" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="gcash-pin">GCash MPIN</label>
-                        <input type="password" id="gcash-pin" name="gcash_pin" placeholder="Enter your 4-digit MPIN" required>
-                    </div>
-
                     <!-- Hidden fields to pass cart data -->
                     <input type="hidden" name="payment_method" value="gcash">
                     <input type="hidden" name="subtotal" value="<?php echo $subtotal; ?>">

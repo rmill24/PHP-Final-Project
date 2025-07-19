@@ -44,6 +44,7 @@
 }
 
 .product-details {
+  font-family: var(--font-sub);
   display: flex;
   flex-direction: column;
   width: 75%;

@@ -1,10 +1,79 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector(".registration-form");
+  const emailField = document.getElementById("email");
+  const emailError = document.getElementById("emailError");
+  let emailCheckTimeout;
+  let isEmailAvailable = true;
+
   const showErrors = (errors) => {
     document.getElementById("formErrors").innerHTML = errors
       .map((e) => `<p>❌ ${e}</p>`)
       .join("");
   };
+
+  const showEmailError = (message) => {
+    emailError.innerHTML = `<p class="error-message">❌ ${message}</p>`;
+    emailError.style.display = 'block';
+    isEmailAvailable = false;
+  };
+
+  const clearEmailError = () => {
+    emailError.innerHTML = '';
+    emailError.style.display = 'none';
+    isEmailAvailable = true;
+  };
+
+  const checkEmailAvailability = async (email) => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      clearEmailError();
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+
+      const response = await fetch('actions/check_email.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!result.available) {
+        showEmailError(result.message);
+      } else {
+        clearEmailError();
+      }
+    } catch (error) {
+      console.error('Email check failed:', error);
+      clearEmailError(); // Don't block submission if check fails
+    }
+  };
+
+  // Add email field event listener for real-time checking
+  if (emailField) {
+    emailField.addEventListener('input', function() {
+      clearTimeout(emailCheckTimeout);
+      const email = this.value.trim();
+      
+      if (email) {
+        // Debounce the email check - wait 500ms after user stops typing
+        emailCheckTimeout = setTimeout(() => {
+          checkEmailAvailability(email);
+        }, 500);
+      } else {
+        clearEmailError();
+      }
+    });
+
+    emailField.addEventListener('blur', function() {
+      const email = this.value.trim();
+      if (email) {
+        checkEmailAvailability(email);
+      }
+    });
+  }
 
   if (form) {
     form.addEventListener("submit", function (e) {

@@ -17,6 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Basic validation
     $errors = [];
     
+    // Check if email is already registered
+    $email = trim($_POST['email'] ?? '');
+    if (!empty($email)) {
+        $existingUser = $userModel->getByEmail($email);
+        if ($existingUser) {
+            $errors[] = 'This email is already registered. Please use a different email or try signing in.';
+        }
+    }
+    
     // Validate phone number
     $phoneNumber = trim($_POST['phone'] ?? '');
     if (empty($phoneNumber)) {
@@ -35,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If there are validation errors, redirect back with error message
     if (!empty($errors)) {
         $errorMessage = implode(', ', $errors);
-        header("Location: ../index.php?page=home&error=" . urlencode($errorMessage));
+        header("Location: ../index.php?page=sign_up&error=" . urlencode($errorMessage));
         exit;
     }
     

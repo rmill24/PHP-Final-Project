@@ -93,9 +93,14 @@ if (isset($_SESSION['user_id'])) {
                 <div class="form-group full-width">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
+                    <div id="emailError" class="field-error"></div>
                 </div>
             </div>
-            <div id="formErrors"></div>
+            <div id="formErrors">
+                <?php if (isset($_GET['error'])): ?>
+                    <p class="server-error">❌ <?php echo htmlspecialchars($_GET['error']); ?></p>
+                <?php endif; ?>
+            </div>
             <button type="submit" class="register-btn">Register</button>
         </form>
     </div>

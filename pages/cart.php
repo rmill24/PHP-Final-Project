@@ -25,13 +25,6 @@ if (isset($_SESSION['user_id'])) {
         <!-- Cart with items -->
         <section class="cart-items">
             <?php if (empty($cartItems)): ?>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        document.querySelector(".cart-items").style.display = "none";
-                        document.querySelector(".order-summary").style.display = "none";
-                        document.querySelector(".empty-cart").style.display = "block";
-                    });
-                </script>
             <?php else: ?>
                 <?php foreach ($cartItems as $item): ?>
                     <article class="cart-item" data-cart-item-id="<?= $item['cart_item_id'] ?>">
@@ -127,7 +120,7 @@ if (isset($_SESSION['user_id'])) {
                 <div class="promo-message" id="promoMessage"></div>
             </div>
 
-            <button class="checkout-btn" onclick="window.location.href='index.php?page=payment'">Proceed to Checkout</button>
+            <button class="checkout-btn">Proceed to Checkout</button>
             <a href="index.php?page=store" class="continue-shopping">
                 <i class="fas fa-arrow-left"></i> Continue Shopping
             </a>

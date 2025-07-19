@@ -340,6 +340,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // ==============================
+  // Checkout Button Handler
+  // ==============================
+  const checkoutBtn = document.querySelector(".checkout-btn");
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", function() {
+      window.location.href = 'index.php?page=payment';
+    });
+  }
+
+  // ==============================
+  // Empty Cart Display Logic
+  // ==============================
+  function handleEmptyCartDisplay() {
+    const cartItems = document.querySelectorAll(".cart-item");
+    if (cartItems.length === 0) {
+      document.querySelector(".cart-items").style.display = "none";
+      document.querySelector(".order-summary").style.display = "none";
+      document.querySelector(".empty-cart").style.display = "block";
+    }
+  }
+
   // Init
+  handleEmptyCartDisplay();
   updateCartTotals();
 });

@@ -30,7 +30,7 @@ $products = $productModel->getAll($category);
                     <p class="price">P<?= number_format($product['price'], 2) ?></p>
                     <form class="add-to-cart-form" data-product-id="<?= $product['id'] ?>" data-size-id="1">
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                        <button type="submit">Add to Cart</button>
+                        <button type="submit"><i class="fa-solid fa-cart-plus"></i><span class="button-text">  Add to Cart</span></button>
                     </form>
                 </div>
             </a>

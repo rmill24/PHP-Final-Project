@@ -57,7 +57,7 @@
 }
 
 .action-grid button {
-  width: 150px;
+  min-width: 150px;
   margin-right: 1rem;
 }
 
@@ -214,10 +214,6 @@
 
   .product-details {
     width: 100%;
-  }
-
-  .action-grid button {
-    width: 125px;
   }
 
   .review-container {

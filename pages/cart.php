@@ -13,6 +13,9 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
 <div class="container">
+    <div class="promo-banner">
+        <img src="assets/img/promo_banner.png" alt="Venusia Sale - 20% Off Everything">
+    </div>
     <div class="cart-header">
         <h1 class="cart-title">Your Venusia Cart</h1>
         <p class="cart-subtitle">Select items to proceed to checkout</p>

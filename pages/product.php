@@ -62,8 +62,7 @@ $sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="action-grid">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <button type="submit" id="addToCartBtn">Add to Cart</button>
-                    <button type="button">Buy Now</button> <!-- Optional -->
+                    <button type="submit" id="addToCartBtn"><i class="fa-solid fa-cart-plus"></i>  Add to Cart</button>
                 </div>
 
                 <!-- Message container -->

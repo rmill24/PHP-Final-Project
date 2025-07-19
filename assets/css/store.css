@@ -143,4 +143,15 @@ h1 {
     flex-direction: column;
     gap: 1rem;
   }
+
+  .add-to-cart-form .button-text {
+    display: none;
+  }
+
+  .add-to-cart-form button {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

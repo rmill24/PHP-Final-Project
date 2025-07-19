@@ -97,7 +97,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <span class="price">P<?= number_format($product['price'], 2) ?></span>
                         <form class="add-to-cart-form" data-product-id="<?= $product['id'] ?>" data-size-id="1">
                             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                            <button class="add-to-cart" type="submit">Add to Cart</button>
+                            <button class="add-to-cart" type="submit"><i class="fa-solid fa-cart-plus"></i>  Add to Cart</button>
                         </form>
 
                     </div>
@@ -106,7 +106,7 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <!-- Banner -->
         <div class="promo-banner">
-            <img src="assets/img/casual-store.png" alt="Summer Sale - 30% Off Everything">
+            <img src="assets/img/promo_banner.png" alt="Venusia Sale - 20% Off Everything">
         </div>
     </div>
 </section>

@@ -127,7 +127,7 @@
             <img src="assets/img/tara-pic.jpg" alt="Tara Victoria E. Gerones" />
           </div>
           <h4>Tara Victoria E. Gerones</h4>
-          <span>Researcher & Frontend Developer</span>
+          <span>UI/UX Designer & Frontend Developer</span>
           <p>
             Tara combines market research with frontend development skills to create digital experiences that resonate with Venusia customers.
           </p>

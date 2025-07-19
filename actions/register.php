@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = bin2hex(random_bytes(16));
     $userModel->saveVerificationToken($userId, $token);
 
-    $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
+    // $verifyLink = "https://venusia.great-site.net/actions/verify.php?user=$userId&token=$token";
 
     // local testing
-    // $verifyLink = "localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
+    $verifyLink = "http://localhost/PHP-Final-Project/actions/verify.php?user=$userId&token=$token";
 
     // Send email using PHPMailer
     $mail = new PHPMailer(true);
@@ -56,8 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <html>
             <body>
                 <p>Thank you for registering with Venusia!</p>
-                <p>Click the link below to verify your account:</p>
+                <p>Click the link below to verify your account (valid for 5 minutes):</p>
                 <p><a href='$verifyLink'>$verifyLink</a></p>
+                <p><strong>Important:</strong> This link will expire in 5 minutes for security reasons.</p>
             </body>
             </html>
         ";

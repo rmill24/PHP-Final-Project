@@ -26,17 +26,27 @@ class UserModel
 
     public function saveVerificationToken($userId, $token)
     {
-        $stmt = $this->db->prepare("INSERT INTO verification_tokens (user_id, token) VALUES (?, ?)");
+        // Delete any existing tokens for this user first
+        $this->db->prepare("DELETE FROM verification_tokens WHERE user_id = ?")->execute([$userId]);
+        
+        // Insert new token with created_at timestamp
+        $stmt = $this->db->prepare("INSERT INTO verification_tokens (user_id, token, created_at) VALUES (?, ?, NOW())");
         return $stmt->execute([$userId, $token]);
     }
 
     public function verifyUser($userId, $token)
     {
-        $stmt = $this->db->prepare("SELECT token FROM verification_tokens WHERE user_id = ?");
+        // Check if token exists and is not expired (valid for 5 minutes)
+        $stmt = $this->db->prepare("
+            SELECT token, created_at 
+            FROM verification_tokens 
+            WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+        ");
         $stmt->execute([$userId]);
-        $storedToken = $stmt->fetchColumn();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($storedToken === $token) {
+        if ($result && $result['token'] === $token) {
+            // Token is valid, verify the user
             $this->db->prepare("UPDATE users SET email_verified = 1 WHERE id = ?")->execute([$userId]);
             $this->db->prepare("DELETE FROM verification_tokens WHERE user_id = ?")->execute([$userId]);
             return true;
@@ -150,5 +160,53 @@ class UserModel
     ");
         $stmt->execute([$orderId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function isEmailVerified($userId)
+    {
+        $stmt = $this->db->prepare("SELECT email_verified FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $result = $stmt->fetchColumn();
+        return $result == 1;
+    }
+
+    public function resendVerificationToken($userId, $token)
+    {
+        // Check if user exists and is not already verified
+        $user = $this->getById($userId);
+        if (!$user || $user['email_verified'] == 1) {
+            return false;
+        }
+
+        // Check if there's a cooldown period (5 minutes) since last token was sent
+        if ($this->isInCooldownPeriod($userId)) {
+            return 'cooldown';
+        }
+
+        // Save new verification token
+        return $this->saveVerificationToken($userId, $token);
+    }
+
+    public function isInCooldownPeriod($userId)
+    {
+        $stmt = $this->db->prepare("
+            SELECT created_at 
+            FROM verification_tokens 
+            WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
+
+    public function getCooldownTimeRemaining($userId)
+    {
+        $stmt = $this->db->prepare("
+            SELECT TIMESTAMPDIFF(SECOND, created_at, DATE_ADD(created_at, INTERVAL 5 MINUTE)) AS seconds_remaining
+            FROM verification_tokens 
+            WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+        ");
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? max(0, $result['seconds_remaining']) : 0;
     }
 }

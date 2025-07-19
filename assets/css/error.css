@@ -10,9 +10,8 @@ main {
 
 .container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin-top: 20px;
-  justify-content: center;
 }
 
 .container button {
@@ -42,4 +41,9 @@ input[type="email"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+#feedbackMessage {
+  width: fit-content;
+  align-self: center;
 }

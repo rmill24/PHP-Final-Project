@@ -14,40 +14,54 @@ $env = require __DIR__ . '/../.env.php';
 $userModel = new UserModel($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Set JSON response header
+    header('Content-Type: application/json');
+    
     $email = $_POST['email'] ?? '';
     
     if (empty($email)) {
-        header('Location: ../index.php?page=error&message=' . urlencode('Please provide an email address.'));
+        echo json_encode(['success' => false, 'message' => 'Please provide an email address.']);
         exit;
     }
     
-    // Get user by email
+    // Get user by email first
     $user = $userModel->getByEmail($email);
     
     if (!$user) {
-        // Don't reveal if email exists or not for security
-        header('Location: ../index.php?page=email_sent&message=' . urlencode('If an account with this email exists and is unverified, a new verification email has been sent.'));
+        // Don't reveal if email exists or not for security - but don't send email or start cooldown
+        echo json_encode([
+            'success' => true,
+            'message' => 'If an account with this email exists and is unverified, a new verification email has been sent.'
+        ]);
         exit;
     }
     
     // Check if already verified
     if ($user['email_verified'] == 1) {
-        header('Location: ../index.php?page=verified&message=' . urlencode('Your account is already verified.'));
+        echo json_encode([
+            'success' => false, 
+            'message' => 'This email address is already verified. You can sign in to your account.'
+        ]);
+        exit;
+    }
+    
+    // Only check cooldown for unverified users who actually exist
+    $remainingTime = $userModel->getCooldownTimeRemainingByEmail($email);
+    if ($remainingTime > 0) {
+        $minutes = floor($remainingTime / 60);
+        $seconds = $remainingTime % 60;
+        $timeMessage = $minutes > 0 ? "{$minutes} minute(s) and {$seconds} second(s)" : "{$seconds} second(s)";
+        echo json_encode([
+            'success' => false, 
+            'message' => "Please wait {$timeMessage} before requesting another verification email.",
+            'cooldown' => $remainingTime
+        ]);
         exit;
     }
     
     // Generate new token and save
     $token = bin2hex(random_bytes(16));
     $result = $userModel->resendVerificationToken($user['id'], $token);
-    
-    if ($result === 'cooldown') {
-        $remainingTime = $userModel->getCooldownTimeRemaining($user['id']);
-        $minutes = floor($remainingTime / 60);
-        $seconds = $remainingTime % 60;
-        $timeMessage = $minutes > 0 ? "{$minutes} minute(s) and {$seconds} second(s)" : "{$seconds} second(s)";
-        header('Location: ../index.php?page=error&message=' . urlencode("Please wait {$timeMessage} before requesting another verification email.") . '&cooldown=' . $remainingTime);
-        exit;
-    }
     
     if ($result) {
         // $verifyLink = "https://venusia.great-site.net/actions/verify.php?user={$user['id']}&token=$token";
@@ -89,14 +103,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ";
             
             $mail->send();
-            header('Location: ../index.php?page=email_sent&message=' . urlencode('A new verification email has been sent to your inbox.'));
+            echo json_encode([
+                'success' => true,
+                'message' => 'A new verification email has been sent to your inbox.',
+                'cooldown' => 300 // 5 minutes
+            ]);
             exit;
         } catch (Exception $e) {
-            header('Location: ../index.php?page=error&message=' . urlencode('Failed to send verification email. Please try again later.'));
+            echo json_encode(['success' => false, 'message' => 'Failed to send verification email. Please try again later.']);
             exit;
         }
     } else {
-        header('Location: ../index.php?page=error&message=' . urlencode('Failed to generate new verification link. Please try again later.'));
+        echo json_encode(['success' => false, 'message' => 'Failed to generate new verification link. Please try again later.']);
         exit;
     }
 }

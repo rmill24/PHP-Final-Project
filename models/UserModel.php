@@ -178,11 +178,6 @@ class UserModel
             return false;
         }
 
-        // Check if there's a cooldown period (5 minutes) since last token was sent
-        if ($this->isInCooldownPeriod($userId)) {
-            return 'cooldown';
-        }
-
         // Save new verification token
         return $this->saveVerificationToken($userId, $token);
     }
@@ -201,11 +196,24 @@ class UserModel
     public function getCooldownTimeRemaining($userId)
     {
         $stmt = $this->db->prepare("
-            SELECT TIMESTAMPDIFF(SECOND, created_at, DATE_ADD(created_at, INTERVAL 5 MINUTE)) AS seconds_remaining
+            SELECT TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(created_at, INTERVAL 5 MINUTE)) AS seconds_remaining
             FROM verification_tokens 
             WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
         ");
         $stmt->execute([$userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? max(0, $result['seconds_remaining']) : 0;
+    }
+
+    public function getCooldownTimeRemainingByEmail($email)
+    {
+        $stmt = $this->db->prepare("
+            SELECT TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(vt.created_at, INTERVAL 5 MINUTE)) AS seconds_remaining
+            FROM verification_tokens vt 
+            JOIN users u ON vt.user_id = u.id
+            WHERE u.email = ? AND vt.created_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+        ");
+        $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? max(0, $result['seconds_remaining']) : 0;
     }

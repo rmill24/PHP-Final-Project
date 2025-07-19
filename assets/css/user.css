@@ -159,6 +159,96 @@
     font-family: var(--font-sub);
 }
 
+/* Edit Profile Styles */
+.detail-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--secondary-light);
+    border-radius: 0.25rem;
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.detail-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(142, 108, 136, 0.2);
+}
+
+.detail-input[type="textarea"], 
+textarea.detail-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.profile-actions.editing .btn-outline:not(.save-btn):not(.cancel-btn) {
+    display: none;
+}
+
+.profile-actions.editing .save-btn,
+.profile-actions.editing .cancel-btn {
+    display: inline-block !important;
+}
+
+.save-btn {
+    background-color: var(--accent);
+    color: var(--primary-white);
+}
+
+.save-btn:hover {
+    background-color: var(--primary-taupe);
+}
+
+.cancel-btn {
+    background-color: transparent;
+    color: var(--primary-taupe);
+    border-color: var(--primary-taupe);
+}
+
+.cancel-btn:hover {
+    background-color: var(--primary-taupe);
+    color: var(--primary-white);
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.save-btn:disabled:hover {
+    background-color: var(--accent);
+}
+
+.profile-message {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+}
+
+.profile-message.success {
+    background-color: #e6f7e6;
+    color: var(--success);
+    border: 1px solid #c3e6c3;
+}
+
+.profile-message.error {
+    background-color: #fde8e8;
+    color: var(--error);
+    border: 1px solid #f5c6c6;
+}
+
+.detail-readonly {
+    font-size: 0.875rem;
+    color: var(--primary-taupe);
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-family: var(--font-sub);
+}
+
 .order-card {
     border: 1px solid var(--secondary-light);
     border-radius: 0.5rem;

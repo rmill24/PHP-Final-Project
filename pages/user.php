@@ -31,7 +31,9 @@ if (!$user) {
         <div class="profile-header">
             <h2>MY PROFILE</h2>
             <div class="profile-actions">
-                <a href="#" class="btn-outline">EDIT PROFILE</a>
+                <a href="#" class="btn-outline" id="editProfileBtn">EDIT PROFILE</a>
+                <button type="submit" class="btn-outline save-btn" id="saveProfileBtn" form="profileForm" style="display: none;">SAVE CHANGES</button>
+                <a href="#" class="btn-outline cancel-btn" id="cancelEditBtn" style="display: none;">CANCEL</a>
                 <a href="actions/logout.php" class="btn-outline">SIGN OUT</a>
             </div>
         </div>
@@ -55,7 +57,7 @@ if (!$user) {
                     </a>
                     <a href="#" class="menu-item">
                         <i class="icon-bag"></i>
-                        <span>Order History</span>
+                        <span>Recent Orders</span>
                     </a>
                 </nav>
             </div>
@@ -64,24 +66,35 @@ if (!$user) {
             <div class="profile-content">
                 <div class="content-section">
                     <h3>Account Details</h3>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <label>Full Name</label>
-                            <p><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></p>
+                    <form id="profileForm" method="post">
+                        <div class="detail-grid">
+                            <div class="detail-item" data-field="first_name">
+                                <label>First Name</label>
+                                <p class="detail-display"><?= htmlspecialchars($user['first_name']) ?></p>
+                                <input type="text" name="first_name" class="detail-input" value="<?= htmlspecialchars($user['first_name']) ?>" data-original-value="<?= htmlspecialchars($user['first_name']) ?>" style="display: none;" required>
+                            </div>
+                            <div class="detail-item" data-field="last_name">
+                                <label>Last Name</label>
+                                <p class="detail-display"><?= htmlspecialchars($user['last_name']) ?></p>
+                                <input type="text" name="last_name" class="detail-input" value="<?= htmlspecialchars($user['last_name']) ?>" data-original-value="<?= htmlspecialchars($user['last_name']) ?>" style="display: none;" required>
+                            </div>
+                            <div class="detail-item" data-field="email">
+                                <label>Email</label>
+                                <p class="detail-display"><?= htmlspecialchars($user['email']) ?></p>
+                                <p class="detail-readonly" style="display: none; color: #999; font-style: italic;">Email cannot be changed</p>
+                            </div>
+                            <div class="detail-item" data-field="phone_number">
+                                <label>Phone</label>
+                                <p class="detail-display"><?= htmlspecialchars($user['phone_number'] ?: 'Not provided') ?></p>
+                                <input type="tel" name="phone_number" class="detail-input" value="<?= htmlspecialchars($user['phone_number']) ?>" data-original-value="<?= htmlspecialchars($user['phone_number']) ?>" style="display: none;">
+                            </div>
+                            <div class="detail-item" data-field="address">
+                                <label>Address</label>
+                                <p class="detail-display"><?= htmlspecialchars($user['address'] ?: 'Not provided') ?></p>
+                                <textarea name="address" class="detail-input" data-original-value="<?= htmlspecialchars($user['address']) ?>" style="display: none;" rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
+                            </div>
                         </div>
-                        <div class="detail-item">
-                            <label>Email</label>
-                            <p><?= htmlspecialchars($user['email']) ?></p>
-                        </div>
-                        <div class="detail-item">
-                            <label>Phone</label>
-                            <p><?= htmlspecialchars($user['phone_number']) ?></p>
-                        </div>
-                        <div class="detail-item">
-                            <label>Address</label>
-                            <p><?= htmlspecialchars($user['address']) ?></p>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
                 <div class="content-section">

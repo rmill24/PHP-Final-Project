@@ -217,4 +217,21 @@ class UserModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? max(0, $result['seconds_remaining']) : 0;
     }
+
+    public function updateProfile($userId, $data)
+    {
+        // Update user profile (excluding email for security)
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET first_name = ?, last_name = ?, phone_number = ?, address = ?
+            WHERE id = ?
+        ");
+        return $stmt->execute([
+            $data['first_name'],
+            $data['last_name'],
+            $data['phone_number'],
+            $data['address'],
+            $userId
+        ]);
+    }
 }

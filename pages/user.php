@@ -88,10 +88,50 @@ if (!$user) {
                                 <p class="detail-display"><?= htmlspecialchars($user['phone_number'] ?: 'Not provided') ?></p>
                                 <input type="tel" name="phone_number" class="detail-input" value="<?= htmlspecialchars($user['phone_number']) ?>" data-original-value="<?= htmlspecialchars($user['phone_number']) ?>" style="display: none;">
                             </div>
-                            <div class="detail-item" data-field="address">
+                            <div class="detail-item address-section" data-field="address">
                                 <label>Address</label>
                                 <p class="detail-display"><?= htmlspecialchars($user['address'] ?: 'Not provided') ?></p>
-                                <textarea name="address" class="detail-input" data-original-value="<?= htmlspecialchars($user['address']) ?>" style="display: none;" rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
+                                <div class="address-fields" style="display: none;">
+                                    <div class="address-row">
+                                        <div class="address-field">
+                                            <label for="street">Street Address</label>
+                                            <input type="text" id="street" name="street" class="detail-input address-input" placeholder="123 Main Street" data-original-value="">
+                                        </div>
+                                    </div>
+                                    <div class="address-row">
+                                        <div class="address-field">
+                                            <label for="city">City</label>
+                                            <input type="text" id="city" name="city" class="detail-input address-input" placeholder="Manila" data-original-value="">
+                                        </div>
+                                        <div class="address-field">
+                                            <label for="state">State/Province</label>
+                                            <input type="text" id="state" name="state" class="detail-input address-input" placeholder="Metro Manila" data-original-value="">
+                                        </div>
+                                    </div>
+                                    <div class="address-row">
+                                        <div class="address-field">
+                                            <label for="zipCode">ZIP Code</label>
+                                            <input type="text" id="zipCode" name="zipCode" class="detail-input address-input" placeholder="1000" data-original-value="">
+                                        </div>
+                                        <div class="address-field">
+                                            <label for="country">Country</label>
+                                            <select id="country" name="country" class="detail-input address-input" data-original-value="">
+                                                <option value="">Select Country</option>
+                                                <option value="Philippines">Philippines</option>
+                                                <option value="United States">United States</option>
+                                                <option value="Canada">Canada</option>
+                                                <option value="United Kingdom">United Kingdom</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Singapore">Singapore</option>
+                                                <option value="Malaysia">Malaysia</option>
+                                                <option value="Thailand">Thailand</option>
+                                                <option value="Indonesia">Indonesia</option>
+                                                <option value="Vietnam">Vietnam</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>

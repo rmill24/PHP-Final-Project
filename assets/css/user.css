@@ -183,6 +183,92 @@ textarea.detail-input {
     min-height: 80px;
 }
 
+/* Address Fields */
+.address-section .detail-display {
+    margin-bottom: 1rem;
+}
+
+.address-fields {
+    display: none;
+}
+
+.address-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.address-row:last-child {
+    margin-bottom: 0;
+}
+
+.address-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.address-field:first-child:last-child {
+    flex: 1;
+}
+
+.address-field label {
+    display: block;
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+    color: var(--primary-taupe);
+    margin-bottom: 0.25rem;
+}
+
+.address-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--secondary-light);
+    border-radius: 0.25rem;
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+    transition: border-color 0.3s ease;
+}
+
+.address-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(142, 108, 136, 0.2);
+}
+
+.address-input select {
+    background-color: var(--primary-white);
+}
+
+@media (max-width: 768px) {
+    .address-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Profile Messages */
+.profile-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.profile-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.profile-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
 .profile-actions.editing .btn-outline:not(.save-btn):not(.cancel-btn) {
     display: none;
 }

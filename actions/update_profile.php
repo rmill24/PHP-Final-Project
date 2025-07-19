@@ -26,7 +26,17 @@ $userId = $_SESSION['user_id'];
 $firstName = trim($_POST['first_name'] ?? '');
 $lastName = trim($_POST['last_name'] ?? '');
 $phoneNumber = trim($_POST['phone_number'] ?? '');
-$address = trim($_POST['address'] ?? '');
+
+// Handle address fields
+$street = trim($_POST['street'] ?? '');
+$city = trim($_POST['city'] ?? '');
+$state = trim($_POST['state'] ?? '');
+$zipCode = trim($_POST['zipCode'] ?? '');
+$country = trim($_POST['country'] ?? '');
+
+// Combine address fields into a single address string
+$addressParts = array_filter([$street, $city, $state, $zipCode, $country]);
+$address = !empty($addressParts) ? implode(', ', $addressParts) : '';
 
 // Basic validation
 $errors = [];
@@ -58,8 +68,45 @@ if (!empty($phoneNumber)) {
     }
 }
 
+// Address validation (if any address field is provided, validate all required ones)
+if (!empty($street) || !empty($city) || !empty($state) || !empty($zipCode) || !empty($country)) {
+    if (empty($street) || strlen($street) < 5) {
+        $errors[] = 'Street address must be at least 5 characters long';
+    } elseif (strlen($street) > 100) {
+        $errors[] = 'Street address must not exceed 100 characters';
+    }
+    
+    if (empty($city) || strlen($city) < 2) {
+        $errors[] = 'City must be at least 2 characters long';
+    } elseif (strlen($city) > 50) {
+        $errors[] = 'City must not exceed 50 characters';
+    } elseif (!preg_match('/^[a-zA-Z\s\-\'\.]+$/', $city)) {
+        $errors[] = 'City contains invalid characters';
+    }
+    
+    if (empty($state) || strlen($state) < 2) {
+        $errors[] = 'State/Province must be at least 2 characters long';
+    } elseif (strlen($state) > 50) {
+        $errors[] = 'State/Province must not exceed 50 characters';
+    } elseif (!preg_match('/^[a-zA-Z\s\-\'\.]+$/', $state)) {
+        $errors[] = 'State/Province contains invalid characters';
+    }
+    
+    if (empty($zipCode)) {
+        $errors[] = 'ZIP code is required';
+    } elseif (!preg_match('/^[0-9]{4,10}$/', $zipCode)) {
+        $errors[] = 'ZIP code must be 4-10 digits';
+    }
+    
+    if (empty($country)) {
+        $errors[] = 'Country is required';
+    } elseif (strlen($country) > 50) {
+        $errors[] = 'Country name must not exceed 50 characters';
+    }
+}
+
 if (!empty($address) && strlen($address) > 255) {
-    $errors[] = 'Address must not exceed 255 characters';
+    $errors[] = 'Complete address must not exceed 255 characters';
 }
 
 if (!empty($errors)) {

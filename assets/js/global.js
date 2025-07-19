@@ -188,11 +188,12 @@ document.addEventListener("DOMContentLoaded", function () {
   registerForm?.addEventListener("submit", function (e) {
     const phoneInput = document.getElementById("registerPhone");
     const phone = phoneInput.value.trim();
+    const digitsOnly = phone.replace(/[^0-9]/g, '');
 
-    if (!/^\d{11}$/.test(phone)) {
+    if (digitsOnly.length !== 11 || !/^[0-9+\-\s()]+$/.test(phone)) {
       e.preventDefault();
       const errorDiv = document.getElementById("registerError");
-      errorDiv.textContent = "⚠️ Phone number must be exactly 11 digits.";
+      errorDiv.textContent = "⚠️ Phone number must be exactly 11 digits and contain only numbers and formatting characters.";
       phoneInput.classList.add("input-error");
     }
   });

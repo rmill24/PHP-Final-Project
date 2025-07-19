@@ -152,8 +152,43 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="form-row">
                 <div class="form-group full-width">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
+                    <label for="street">Street Address</label>
+                    <input type="text" id="street" name="street" placeholder="123 Main Street" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="Manila" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State/Province</label>
+                    <input type="text" id="state" name="state" placeholder="Metro Manila" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zipCode">ZIP Code</label>
+                    <input type="text" id="zipCode" name="zipCode" placeholder="1000" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country" required>
+                        <option value="">Select Country</option>
+                        <option value="Philippines" selected>Philippines</option>
+                        <option value="United States">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Vietnam">Vietnam</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
             </div>
 

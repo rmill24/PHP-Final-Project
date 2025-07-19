@@ -14,12 +14,47 @@ $env = require __DIR__ . '/../.env.php';
 $userModel = new UserModel($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Basic validation
+    $errors = [];
+    
+    // Validate phone number
+    $phoneNumber = trim($_POST['phone'] ?? '');
+    if (empty($phoneNumber)) {
+        $errors[] = 'Phone number is required';
+    } else {
+        // Remove all non-digit characters for validation
+        $digitsOnly = preg_replace('/[^0-9]/', '', $phoneNumber);
+        
+        if (strlen($digitsOnly) !== 11) {
+            $errors[] = 'Phone number must be exactly 11 digits';
+        } elseif (!preg_match('/^[0-9+\-\s()]+$/', $phoneNumber)) {
+            $errors[] = 'Phone number contains invalid characters';
+        }
+    }
+    
+    // If there are validation errors, redirect back with error message
+    if (!empty($errors)) {
+        $errorMessage = implode(', ', $errors);
+        header("Location: ../index.php?page=home&error=" . urlencode($errorMessage));
+        exit;
+    }
+    
+    // Combine address fields into a single address string
+    $addressParts = [
+        $_POST['street'],
+        $_POST['city'],
+        $_POST['state'],
+        $_POST['zipCode'],
+        $_POST['country']
+    ];
+    $combinedAddress = implode(', ', array_filter($addressParts));
+    
     $data = [
         'first_name' => $_POST['firstName'],
         'last_name'  => $_POST['lastName'],
         'email'      => $_POST['email'],
-        'phone'      => $_POST['phone'],
-        'address'    => $_POST['address'],
+        'phone'      => $phoneNumber,
+        'address'    => $combinedAddress,
         'password'   => $_POST['password']
     ];
 

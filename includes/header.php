@@ -101,7 +101,7 @@
             </form>
             <p class="sign-up-text">
                 Don't have an account yet?
-                <a href="index.php?page=home#register" class="sign-up-link" onclick="closeModal()">Sign up here</a>
+                <a href="index.php?page=sign_up" class="sign-up-link" onclick="closeModal()">Sign up here</a>
             </p>
         </div>
     </div>

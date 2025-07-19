@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/db.php';
 
 $stmt = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 4");
@@ -25,7 +26,11 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="carousel-caption d-none d-md-block">
                     <h2>Discover Timeless Style</h2>
                     <p>"Redefine simplicity and sophistication with curated looks that speak grace and confidence"</p>
-                    <a class="btn btn-light text-light" href="#register">Sign Up & Slay</a>
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+                        <a class="btn btn-light text-light" href="index.php?page=sign_up">Sign Up & Slay</a>
+                    <?php else: ?>
+                        <a class="btn btn-light text-light" href="index.php?page=store">Shop Now</a>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -108,98 +113,5 @@ $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="promo-banner">
             <img src="assets/img/promo_banner.png" alt="Venusia Sale - 20% Off Everything">
         </div>
-    </div>
-</section>
-
-<!-- Registration Section -->
-<section class="registration-section" id="register">
-    <div class="registration-container">
-        <div class="registration-content">
-            <h2>Sign Up Now</h2>
-            <p class="subtitle">A touch of elegance, just for you.</p>
-            <p>Join our list and enjoy early access to new drops, exclusive styles, and timeless pieces you'll keep reaching for.</p>
-        </div>
-
-        <form class="registration-form" action="actions/register.php" method="POST">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required>
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label for="street">Street Address</label>
-                    <input type="text" id="street" name="street" placeholder="123 Main Street" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city" placeholder="Manila" required>
-                </div>
-                <div class="form-group">
-                    <label for="state">State/Province</label>
-                    <input type="text" id="state" name="state" placeholder="Metro Manila" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="zipCode">ZIP Code</label>
-                    <input type="text" id="zipCode" name="zipCode" placeholder="1000" required>
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <select id="country" name="country" required>
-                        <option value="">Select Country</option>
-                        <option value="Philippines" selected>Philippines</option>
-                        <option value="United States">United States</option>
-                        <option value="Canada">Canada</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-            </div>
-            <div id="formErrors"></div>
-            <button type="submit" class="register-btn">Register</button>
-        </form>
     </div>
 </section>

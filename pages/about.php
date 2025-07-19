@@ -179,7 +179,7 @@
     <section class="cta-section">
       <h2>Ready to Experience Venusia?</h2>
       <p>Discover our latest collection and find pieces that speak to your unique style and personality.</p>
-      <a href="#collection" class="cta-button">Explore Our Collection</a>
+      <a href="index.php?page=store" class="cta-button">Explore Our Collection</a>
     </section>
 
 

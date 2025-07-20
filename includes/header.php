@@ -24,7 +24,6 @@
                 <span class="loader-brand-text">VENUSIA</span>
             </div>
             <p class="loader-tagline">Luxury redefined for the modern woman</p>
-            <div class="loader-spinner"></div>
             <div class="loader-progress">
                 <div class="loader-progress-bar"></div>
             </div>

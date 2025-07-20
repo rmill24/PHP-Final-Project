@@ -43,7 +43,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="form-row">
                 <div class="form-group full-width">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" required placeholder="0912 3456 789">
                 </div>
             </div>
 

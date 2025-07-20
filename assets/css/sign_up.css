@@ -14,12 +14,12 @@
 }
 
 .registration-container {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 50px;
-  padding: 0 20px;
+  gap: 2rem;
   position: relative;
   z-index: 1;
 }
@@ -54,13 +54,12 @@
 
 /* Registration Form */
 .registration-form {
-  background: rgba(108, 108, 108, 0.85);
+  background: linear-gradient(120deg, var(--primary-taupe), var(--secondary-light));
   backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 40px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  min-width: 500px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 750px;
 }
 
 .form-row {
@@ -79,7 +78,7 @@
 
 .form-group label {
   display: block;
-  color: #ffffff;
+  color: var(--secondary-dark);
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 8px;
@@ -94,7 +93,7 @@
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--primary-offwhite);
   color: var(--secondary-dark);
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -105,7 +104,7 @@
 .form-group select:focus {
   outline: none;
   background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.3);
+  box-shadow: 0 0 0 3px var(--primary-taupe);
   transform: translateY(-1px);
 }
 
@@ -130,8 +129,8 @@
 .register-btn {
   width: 100%;
   padding: 15px;
-  background-color: var(--secondary-dark);
-  color: #ffffff;
+  background-color: var(--accent);
+  color: var(--primary-offwhite);
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
@@ -146,7 +145,8 @@
 }
 
 .register-btn:hover {
-  background-color: var(--accent);
+  background-color: var(--primary-offwhite);
+  color: var(--accent);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
@@ -156,7 +156,7 @@
 }
 
 #formErrors {
-  color: white;
+  color: var(--secondary-dark);
   font-weight: bold;
   text-align: left;
 }
